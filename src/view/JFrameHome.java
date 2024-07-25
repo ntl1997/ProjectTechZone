@@ -30,7 +30,10 @@ public class JFrameHome extends javax.swing.JFrame {
         initComponents();
         init();
     }
-
+    // Vidu
+    void fillTable(){
+        System.out.println("ví dụ");
+    }
     void init() {
 
         setTitle("TechZone");
