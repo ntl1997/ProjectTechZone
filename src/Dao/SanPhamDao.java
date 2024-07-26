@@ -67,7 +67,7 @@ public class SanPhamDao extends TechZoneDao<SANPHAM, String> {
                 e.setMOTA(rs.getString("MOTA"));                
                 list.add(e);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return list;

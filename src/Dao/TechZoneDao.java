@@ -7,6 +7,8 @@ import java.util.List;
 /**
  *
  * @author Tun
+ * @param <EntityType>
+ * @param <KeyType>
  */
 public abstract class TechZoneDao <EntityType,KeyType>{
     public abstract void insert(EntityType entity);
