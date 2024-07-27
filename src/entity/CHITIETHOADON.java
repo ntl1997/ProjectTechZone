@@ -11,13 +11,13 @@ import java.util.Date;
  * @author Tun
  */
 public class CHITIETHOADON {
-    private String ID_HDCT;
+    private int ID_HDCT;
     private int MAHD, MASP;
     private Date NGAYLAP;
     private float GIABAN; 
     private int SOLUONG;
 
-    public CHITIETHOADON(String ID_HDCT, int MAHD, int MASP, Date NGAYLAP, float GIABAN, int SOLUONG) {
+    public CHITIETHOADON(int ID_HDCT, int MAHD, int MASP, Date NGAYLAP, float GIABAN, int SOLUONG) {
         this.ID_HDCT = ID_HDCT;
         this.MAHD = MAHD;
         this.MASP = MASP;
@@ -29,11 +29,11 @@ public class CHITIETHOADON {
     public CHITIETHOADON() {
     }
 
-    public String getID_HDCT() {
+    public int getID_HDCT() {
         return ID_HDCT;
     }
 
-    public void setID_HDCT(String ID_HDCT) {
+    public void setID_HDCT(int ID_HDCT) {
         this.ID_HDCT = ID_HDCT;
     }
 
