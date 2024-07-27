@@ -3,10 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package View;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Tun
