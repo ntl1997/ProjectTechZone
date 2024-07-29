@@ -73,6 +73,10 @@ public class HoaDonDao extends TechZoneDao<HOADON, String>{
         }
         return list;
     }
-    
+    //Tìm kiếm theo tên
+    public List<HOADON> selectByKeyword(String keyword) {
+        String sql = "select * from HOADON WHERE LIKE ?";
+        return this.selectBySql(sql, '%' + keyword + "%");
+    }
     
 }

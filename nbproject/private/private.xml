@@ -3,8 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/G:/My%20Drive/ProjectTechZone/ProjectTechZone/src/entity/TAIKHOAN.java</file>
-            <file>file:/G:/My%20Drive/ProjectTechZone/ProjectTechZone/src/view/JDialogSanPham.java</file>
+            <file>file:/G:/My%20Drive/ProjectTechZone/ProjectTechZone/src/entity/HOADON.java</file>
+            <file>file:/G:/My%20Drive/ProjectTechZone/ProjectTechZone/src/view/JDialogHoaDonChiTiet.java</file>
+            <file>file:/G:/My%20Drive/ProjectTechZone/ProjectTechZone/src/Dao/HoaDonDao.java</file>
             <file>file:/G:/My%20Drive/ProjectTechZone/ProjectTechZone/src/view/JDialogHoaDon.java</file>
         </group>
     </open-files>

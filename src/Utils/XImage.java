@@ -19,7 +19,7 @@ import javax.swing.ImageIcon;
  */
 public class XImage {
     public static Image getAppIcon(){ // Trả về kiểu Image
-        URL url = XImage.class.getResource("/Image/Hinh/fpt.png");
+        URL url = XImage.class.getResource("/icons/20.png");
         //getResource trả về kiểu URL,
         return new ImageIcon(url).getImage();
     }
