@@ -68,4 +68,18 @@ public class HangSXDao extends TechZoneDao<HANGSX, Integer> {
         return list;
     }
 
+public int layIDHSX(String tenHSX){
+    final String LayIDHSX = "SELECT ID_HANGSX FROM HANGSX WHERE TENHANGSX = ?";
+    int idHangSX = 0;
+    try {
+        Object[] args = { tenHSX }; 
+        ResultSet rs = XJdbc.query(LayIDHSX, args);        
+        if (rs.next()) {
+            idHangSX = rs.getInt("ID_HANGSX");
+        }
+    } catch (Exception e) {
+        System.out.println("LẤY THẤT BẠI" + e);
+    }
+     return idHangSX;
+}    
 }
