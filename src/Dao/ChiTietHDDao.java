@@ -3,21 +3,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Dao;
+
 import java.sql.*;
 import java.util.*;
 import Entity.CHITIETHOADON;
+import Entity.HOADON;
 import Utils.XJdbc;
+
 /**
  *
  * @author Tun
  */
-public class ChiTietHDDao extends TechZoneDao<CHITIETHOADON, String>{
-    
-    final String Insert_SQL ="insert into CHITIETHOADON (MAHD, MASP, NGAYLAP, GIABAN, SOLUONG) values(?,?,?,?,?)";
-    final String Update_SQL="update CHITIETHOADON set MAHD = ?, MASP = ?, NGAYLAP = ?, GIABAN = ?, SOLUONG = ? where ID_HDCT = ?";
-    final String Delete_SQL="delete from CHITIETHOADON where ID_HDCT=?";
-    final String Select_all_SQL="select * from CHITIETHOADON";
-    final String Select_ID_SQL="select * from CHITIETHOADON where ID_HDCT=?";
+public class ChiTietHDDao extends TechZoneDao<CHITIETHOADON, Integer> {
+
+    final String Insert_SQL = "insert into CHITIETHOADON (MAHD, MASP, NGAYLAP, GIABAN, SOLUONG) values(?,?,?,?,?)";
+    final String Update_SQL = "update CHITIETHOADON set MAHD = ?, MASP = ?, NGAYLAP = ?, GIABAN = ?, SOLUONG = ? where ID_HDCT = ?";
+    final String Delete_SQL = "delete from CHITIETHOADON where ID_HDCT=?";
+    final String Select_all_SQL = "select * from CHITIETHOADON";
+    final String Select_ID_SQL = "select * from CHITIETHOADON where ID_HDCT=?";
 
     @Override
     public void insert(CHITIETHOADON entity) {
@@ -30,7 +33,7 @@ public class ChiTietHDDao extends TechZoneDao<CHITIETHOADON, String>{
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         XJdbc.update(Delete_SQL, id);
     }
 
@@ -40,9 +43,9 @@ public class ChiTietHDDao extends TechZoneDao<CHITIETHOADON, String>{
     }
 
     @Override
-    public CHITIETHOADON selectById(String id) {
-        List <CHITIETHOADON> list = selectBySql(Select_ID_SQL,id);
-        if(list.isEmpty()){
+    public CHITIETHOADON selectById(Integer id) {
+        List<CHITIETHOADON> list = selectBySql(Select_ID_SQL, id);
+        if (list.isEmpty()) {
             return null;
         }
         return list.get(0);
@@ -50,10 +53,10 @@ public class ChiTietHDDao extends TechZoneDao<CHITIETHOADON, String>{
 
     @Override
     public List<CHITIETHOADON> selectBySql(String sql, Object... args) {
-        List <CHITIETHOADON> list = new ArrayList<>();
+        List<CHITIETHOADON> list = new ArrayList<>();
         try {
             ResultSet rs = XJdbc.query(sql, args);
-            while(rs.next()){
+            while (rs.next()) {
                 CHITIETHOADON e = new CHITIETHOADON();
                 e.setID_HDCT(rs.getInt("ID_HDCT"));
                 e.setMAHD(rs.getInt("MAHD"));
@@ -68,6 +71,9 @@ public class ChiTietHDDao extends TechZoneDao<CHITIETHOADON, String>{
         }
         return list;
     }
-    
-    
+
+    public List<HOADON> selectByKeyword(String keyword) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
