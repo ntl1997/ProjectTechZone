@@ -25,37 +25,7 @@ public class JDialogBanHang extends javax.swing.JDialog {
     int width = 180;
     int height = 603;
     
-    void openMenuS(){
-        new Thread(new Runnable(){
-            @Override
-            public void run(){
-                for (int i = 0; i < 180; i++){
-                    jPlMenuSide.setSize(i, height);
-                    try {
-                        Thread.sleep(2);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(JDialogBanHang.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        }).start();
-    }
-    
-    void closeMenuS(){
-        new Thread(new Runnable(){
-            @Override
-            public void run(){
-                for (int i = width; i > 0; i--){
-                    jPlMenuSide.setSize(i, height);
-                    try {
-                        Thread.sleep(2);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(JDialogBanHang.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        }).start();
-    }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
