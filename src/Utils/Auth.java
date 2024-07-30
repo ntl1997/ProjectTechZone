@@ -4,21 +4,18 @@
  */
 package Utils;
 
-//import entity.NhanVienEntity;
-//
-///**
-// *
-// * @author luand
-// */
-//public class Auth {
-//    public static NhanVienEntity user = null;
-//    public static void clear(){
-//        Auth.user=null;
+import Entity.TAIKHOAN;
+
+public class Auth {
+    public static TAIKHOAN user = null;
+    public static void clear(){
+        Auth.user=null;
+    }
+    public static boolean isLogin(){
+        return Auth.user != null;
+    }
+//    public static int isManager(){
+//        return Auth.isLogin() && user.isTr();
 //    }
-//    public static boolean isLogin(){
-//        return Auth.user != null;
-//    }
-//    public static boolean isManager(){
-//        return Auth.isLogin() && user.isVaitro();
-//    }
-//}
+}
+

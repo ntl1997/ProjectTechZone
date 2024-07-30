@@ -8,6 +8,9 @@ View.JDialogSanPham$6
 View.JDialogSanPham$5
 View.JDialogSanPham$17$1
 View.JDialogSanPham$9
+View.JDialogSanPham$15$1
+View.JDialogSanPham$16$1
+View.JDialogSanPham$13$1
 View.JDialogSanPham$12
 View.JDialogSanPham$13
 View.JDialogSanPham$10

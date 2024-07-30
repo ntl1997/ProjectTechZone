@@ -78,6 +78,10 @@ public class JFrameHome extends javax.swing.JFrame {
     void openGioiThieu(){
         new JDialogHoTro(this, true).setVisible(true);
     }
+    
+    void openDoiMatKhau() {
+        new JDiaLogDoiMatKhau(this, true).setVisible(true);
+    }
     ////////////////////////////////////
     /**
      * This method is called from within the constructor to initialize the form.
@@ -126,6 +130,7 @@ public class JFrameHome extends javax.swing.JFrame {
         jButton19 = new javax.swing.JButton();
         jLabel40 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        jButton20 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -512,6 +517,17 @@ public class JFrameHome extends javax.swing.JFrame {
 
         jSeparator1.setBackground(new java.awt.Color(0, 0, 204));
 
+        jButton20.setBackground(new java.awt.Color(0, 102, 204));
+        jButton20.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        jButton20.setForeground(new java.awt.Color(255, 255, 255));
+        jButton20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/3.png"))); // NOI18N
+        jButton20.setText("Đổi mật khẩu");
+        jButton20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton20ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPlMenuSide1Layout = new javax.swing.GroupLayout(jPlMenuSide1);
         jPlMenuSide1.setLayout(jPlMenuSide1Layout);
         jPlMenuSide1Layout.setHorizontalGroup(
@@ -529,6 +545,7 @@ public class JFrameHome extends javax.swing.JFrame {
                 .addGap(30, 30, 30))
             .addComponent(jButton14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator1)
+            .addComponent(jButton20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPlMenuSide1Layout.setVerticalGroup(
             jPlMenuSide1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -537,16 +554,18 @@ public class JFrameHome extends javax.swing.JFrame {
                 .addComponent(jLabel40)
                 .addGap(18, 18, 18)
                 .addComponent(jButton12)
-                .addGap(30, 30, 30)
+                .addGap(25, 25, 25)
                 .addComponent(jButton14)
-                .addGap(30, 30, 30)
+                .addGap(25, 25, 25)
                 .addComponent(jButton15)
-                .addGap(30, 30, 30)
+                .addGap(25, 25, 25)
                 .addComponent(jButton16)
-                .addGap(30, 30, 30)
+                .addGap(25, 25, 25)
                 .addComponent(jButton13)
-                .addGap(30, 30, 30)
+                .addGap(25, 25, 25)
                 .addComponent(jButton17)
+                .addGap(25, 25, 25)
+                .addComponent(jButton20)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -574,7 +593,7 @@ public class JFrameHome extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel24)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -590,7 +609,7 @@ public class JFrameHome extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
         );
 
         pack();
@@ -627,6 +646,10 @@ public class JFrameHome extends javax.swing.JFrame {
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
 
     }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
+        this.openDoiMatKhau();
+    }//GEN-LAST:event_jButton20ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -675,6 +698,7 @@ public class JFrameHome extends javax.swing.JFrame {
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
+    private javax.swing.JButton jButton20;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
