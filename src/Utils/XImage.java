@@ -24,7 +24,7 @@ public class XImage {
         return new ImageIcon(url).getImage();
     }
     public static boolean save(File src){
-        File dst = new File("src\\Image\\Logos", src.getName());
+        File dst = new File("src\\images\\photos", src.getName());
         if (!dst.getParentFile().exists()) {
             dst.getParentFile().mkdirs(); // Tạo thư mục //dst: Destination
         }
@@ -38,7 +38,7 @@ public class XImage {
         }
     }
     public static ImageIcon read(String filename){
-        File path = new File("src\\Image\\Logos",filename);
+        File path = new File("src\\images\\photos",filename);
         return new ImageIcon(path.getAbsolutePath());
     }
 }
