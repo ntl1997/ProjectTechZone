@@ -16,8 +16,7 @@ import Utils.XJdbc;
 public class TaiKhoanDao extends TechZoneDao<TAIKHOAN, String>{
     
     final String Insert_SQL ="insert into TAIKHOAN (MACV, TENDN, TENNV, EMAIL, MATKHAU, DIACHI, DIENTHOAI, NGAYSINH, GIOITINH, TRANGTHAI) values(?,?,?,?,?,?,?,?,?,?)";
-    final String Update_SQL="update TAIKHOAN set MACV = ?, TENDN = ?, TENNV = ?, EMAIL = ?, MATKHAU = ?, DIACHI = ?, "
-            + "DIENTHOAI = ?, NGAYSINH = ?, GIOITINH = ?, TRANGTHAI = ? where ID_TK = ?";
+    final String Update_SQL="update TAIKHOAN set MACV = ?, TENDN = ?, TENNV = ?, EMAIL = ?, MATKHAU = ?, DIACHI = ?, DIENTHOAI = ?, NGAYSINH = ?, GIOITINH = ?, TRANGTHAI = ? where ID_TK = ?";
     final String Delete_SQL="delete from TAIKHOAN where ID_TK=?";
     final String Select_all_SQL="select * from TAIKHOAN";
     final String Select_ID_SQL="select * from TAIKHOAN where ID_TK=?";
@@ -27,12 +26,26 @@ public class TaiKhoanDao extends TechZoneDao<TAIKHOAN, String>{
         XJdbc.update(Insert_SQL, entity.getMACV(), entity.getTENDN(), entity.getTENNV(), entity.getEMAIL(), entity.getMATKHAU(),
                 entity.getDIACHI(), entity.getDIENTHOAI(), entity.getNGAYSINH(), entity.getGIOITINH(), entity.getTRANGTHAI());
     }
-
+//    private int ID_TK;
+//    private int MACV;
+//    private String TENDN,TENNV, EMAIL,MATKHAU,DIACHI,DIENTHOAI;
+//    private Date NGAYSINH; 
+//    private int GIOITINH;
+//    private int TRANGTHAI; 
     @Override
     public void update(TAIKHOAN entity) {
-        XJdbc.update(Update_SQL, entity.getMACV(), entity.getTENDN(), entity.getTENNV(), entity.getEMAIL(), entity.getMATKHAU(),
-                entity.getDIACHI(), entity.getDIENTHOAI(), 
-                entity.getNGAYSINH(), entity.getGIOITINH(), entity.getTRANGTHAI(), entity.getID_TK());
+        XJdbc.update(Update_SQL, 
+                entity.getMACV(), 
+                entity.getTENDN(), 
+                entity.getTENNV(), 
+                entity.getEMAIL(), 
+                entity.getMATKHAU(),
+                entity.getDIACHI(), 
+                entity.getDIENTHOAI(), 
+                entity.getNGAYSINH(), 
+                entity.getGIOITINH(), 
+                entity.getTRANGTHAI(), 
+                entity.getID_TK());
     }
 
     @Override
