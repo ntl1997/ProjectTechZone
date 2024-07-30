@@ -4,6 +4,8 @@
  */
 package Entity;
 
+import java.util.Objects;
+
 /**
  *
  * @author Tun
@@ -44,6 +46,32 @@ public class LOAIPK {
     public void setMOTA(String MOTA) {
         this.MOTA = MOTA;
     }
-        
-    
+
+    @Override
+    public String toString() {
+        return TENLPK;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.TENLPK);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final LOAIPK other = (LOAIPK) obj;
+        return Objects.equals(this.TENLPK, other.TENLPK);
+    }
+
 }

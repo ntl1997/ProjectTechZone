@@ -4,6 +4,8 @@
  */
 package Entity;
 
+import java.util.Objects;
+
 /**
  *
  * @author Tun
@@ -43,6 +45,33 @@ public class HANGSX {
 
     public void setMOTA(String MOTA) {
         this.MOTA = MOTA;
+    }
+
+    @Override
+    public String toString() {
+        return TENHANGSX;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.TENHANGSX);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final HANGSX other = (HANGSX) obj;
+        return Objects.equals(this.TENHANGSX, other.TENHANGSX);
     }
     
 }
