@@ -157,17 +157,18 @@ public class JFrameHome extends javax.swing.JFrame {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel22)
-                .addGap(65, 65, 65))
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblTenNV1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblChucVu1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel23)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblTenNV1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblChucVu1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel23))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(jLabel22)))
                 .addGap(0, 52, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
@@ -257,7 +258,7 @@ public class JFrameHome extends javax.swing.JFrame {
 
         lblNhanVien3.setText("Phạm Văn C");
 
-        jPanel10.setBackground(new java.awt.Color(255, 204, 153));
+        jPanel10.setBackground(new java.awt.Color(204, 204, 255));
 
         lblTen.setBackground(new java.awt.Color(0, 204, 204));
         lblTen.setFont(new java.awt.Font("Times New Roman", 1, 30)); // NOI18N
