@@ -68,4 +68,18 @@ public class LoaiPKDao extends TechZoneDao<LOAIPK, Integer> {
         return list;
     }
 
+    public int layIDLPK(String mota){
+        final String LayIDLPK = "SELECT ID_LPK FROM LOAIPK WHERE MOTA = ?";
+        int idLPK = 0;
+        try {
+            Object[] args = { mota }; 
+            ResultSet rs = XJdbc.query(LayIDLPK, args);        
+            if (rs.next()) {
+            idLPK = rs.getInt("ID_LPK");
+        }
+        } catch (Exception e) {
+            System.out.println("LAY THAT BAI: " + e);
+        }
+        return idLPK;
+    }
 }
