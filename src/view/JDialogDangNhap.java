@@ -23,7 +23,8 @@ public class JDialogDangNhap extends javax.swing.JDialog {
         initComponents();
         
     }
-      void dangNhap(){
+      
+    void dangNhap(){
     String tendn = txtTaiKhoan.getText();
     String mk = new String(txtMkhau.getPassword());
     TAIKHOAN tdn = tkd.selectById(tendn);  // Sử dụng tên đăng nhập (TENDN)
@@ -37,7 +38,7 @@ public class JDialogDangNhap extends javax.swing.JDialog {
     }
 }
 
-      void ketThuc(){
+    void ketThuc(){
           if(MsgBox.confirm(this, "Bạn muốn kết thúc ứng dụng không")){
               System.exit(0);
           }
