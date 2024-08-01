@@ -4,27 +4,45 @@
  */
 package view;
 
+import Dao.TaiKhoanDao;
+import Entity.TAIKHOAN;
+import Utils.Auth;
+import Utils.MsgBox;
+
 /**
  *
  * @author Admin
  */
 public class JDialogDangNhap extends javax.swing.JDialog {
-
+    TaiKhoanDao tkd = new TaiKhoanDao();
     /**
-     * Creates new form DangNhap
+     * Creates new form DangNhapJDialog
      */
     public JDialogDangNhap(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        init();
-    }
-    void init() {
-        setTitle("TechZone");
-        setLocationRelativeTo(null);
+        
     }
       void dangNhap(){
-    
+    String tendn = txtTaiKhoan.getText();
+    String mk = new String(txtMkhau.getPassword());
+    TAIKHOAN tdn = tkd.selectById(tendn);  // Sử dụng tên đăng nhập (TENDN)
+    if (tdn == null) {
+        MsgBox.alert(this, "Sai tên đăng nhập");
+    } else if (!mk.equals(tdn.getMATKHAU())) {
+        MsgBox.alert(this, "Sai mật khẩu");
+    } else {
+        Auth.user = tdn;
+        this.dispose();
+    }
+}
+
+      void ketThuc(){
+          if(MsgBox.confirm(this, "Bạn muốn kết thúc ứng dụng không")){
+              System.exit(0);
+          }
       }
+      
     
 
     /**
@@ -45,7 +63,7 @@ public class JDialogDangNhap extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtMaNV = new javax.swing.JTextField();
+        txtTaiKhoan = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtMkhau = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
@@ -118,7 +136,7 @@ public class JDialogDangNhap extends javax.swing.JDialog {
         jLabel4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jLabel4.setText("Tài khoản");
 
-        txtMaNV.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        txtTaiKhoan.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jLabel5.setText("Mật khẩu");
@@ -179,7 +197,7 @@ public class JDialogDangNhap extends javax.swing.JDialog {
                                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(txtMkhau, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtMaNV, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txtTaiKhoan, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -207,7 +225,7 @@ public class JDialogDangNhap extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTaiKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -247,11 +265,11 @@ public class JDialogDangNhap extends javax.swing.JDialog {
     }//GEN-LAST:event_txtMkhauActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+       dangNhap();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        ketThuc();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -279,6 +297,8 @@ public class JDialogDangNhap extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(JDialogDangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -310,7 +330,7 @@ public class JDialogDangNhap extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField txtMaNV;
     private javax.swing.JPasswordField txtMkhau;
+    private javax.swing.JTextField txtTaiKhoan;
     // End of variables declaration//GEN-END:variables
 }
