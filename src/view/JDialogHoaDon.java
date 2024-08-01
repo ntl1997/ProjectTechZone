@@ -19,10 +19,12 @@ import javax.swing.table.DefaultTableModel;
  * @author Admin
  */
 public class JDialogHoaDon extends javax.swing.JDialog {
+
     ChiTietHDDao cthddao = new ChiTietHDDao();
     HoaDonDao hddao = new HoaDonDao();
     int row = -1;
     List<HOADON> listHoaDon = new ArrayList<>();
+
     /**
      * Creates new form HoaDon
      */
@@ -42,7 +44,7 @@ public class JDialogHoaDon extends javax.swing.JDialog {
             case 1:
                 return "Đã Thanh Toán";
             case 2:
-                return "Hủy";
+                return "Đã Hủy";
             default:
                 return "Không xác định";
         }
@@ -56,13 +58,16 @@ public class JDialogHoaDon extends javax.swing.JDialog {
                 Object data[] = {
                     hd.getID_HD(),
                     hd.getMATAIKHOAN(),
-                    hd.getMAKH(),
                     hd.getNGAYLAP(),
                     hd.getTONGTIEN(),
                     hd.getPHANTRAMGG(),
-                    hd.getTICHDIEM(),
                     hd.getTHANHTIEN(),
-                    convertTrangThai(hd.getTRANGTHAI())
+                    convertTrangThai(hd.getTRANGTHAI()),
+                    hd.getTenKH(),
+                    hd.getSDT(),
+                    hd.getDiaChi(),
+                    hd.isHinhThucTT() ? "Tiền mặt" : "Chuyển khoản",
+                    hd.getLyDo()
                 };
                 model.addRow(data);
             }
@@ -71,6 +76,7 @@ public class JDialogHoaDon extends javax.swing.JDialog {
             MsgBox.alert(this, "Lỗi truy vấn dữ liệu");
         }
     }
+
     void updateStatus() {
         boolean edit = (this.row >= 0);
         boolean first = (this.row == 0);
@@ -150,17 +156,17 @@ public class JDialogHoaDon extends javax.swing.JDialog {
 
         tblHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Mã HD", "Mã TK", "Mã KH", "Ngày lập", "Tổng tiền", "Phần trăm GG", "Tích điểm", "Thành tiền", "Trạng thái"
+                "Mã HD", "Mã TK", "Ngày lập", "Tổng tiền", "Phần trăm GG", "Thành tiền", "Trạng thái", "Tên KH", "SĐT", "Địa Chỉ", "Hình Thức TT", "Lý Do"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -219,8 +225,7 @@ public class JDialogHoaDon extends javax.swing.JDialog {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(btnFirst, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
@@ -229,14 +234,16 @@ public class JDialogHoaDon extends javax.swing.JDialog {
                         .addComponent(btnNext)
                         .addGap(27, 27, 27)
                         .addComponent(btnLast, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
-                        .addComponent(btnSearch)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtTimKiemHD)))
-                .addContainerGap(36, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addGap(70, 70, 70)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSearch)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtTimKiemHD, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 716, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,19 +261,23 @@ public class JDialogHoaDon extends javax.swing.JDialog {
                         .addComponent(btnSearch)
                         .addComponent(txtTimKiemHD, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();

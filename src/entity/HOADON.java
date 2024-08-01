@@ -12,27 +12,34 @@ import java.util.Date;
  */
 public class HOADON {
     private int ID_HD; 
-    private int MATAIKHOAN, MAKH;
+    private int MATAIKHOAN;
     private Date NGAYLAP; 
     private float TONGTIEN; 
     private int PHANTRAMGG; 
-    private float TICHDIEM; 
     private float THANHTIEN; 
     private int TRANGTHAI;
+    private String TenKH;
+    private String SDT;
+    private String DiaChi;
+    private boolean HinhThucTT;
+    private String LyDo;
 
-    public HOADON(int ID_HD, int MATAIKHOAN, int MAKH, Date NGAYLAP, float TONGTIEN, int PHANTRAMGG, float TICHDIEM, float THANHTIEN, int TRANGTHAI) {
+    public HOADON() {
+    }
+
+    public HOADON(int ID_HD, int MATAIKHOAN, Date NGAYLAP, float TONGTIEN, int PHANTRAMGG, float THANHTIEN, int TRANGTHAI, String TenKH, String SDT, String DiaChi, boolean HinhThucTT, String LyDo) {
         this.ID_HD = ID_HD;
         this.MATAIKHOAN = MATAIKHOAN;
-        this.MAKH = MAKH;
         this.NGAYLAP = NGAYLAP;
         this.TONGTIEN = TONGTIEN;
         this.PHANTRAMGG = PHANTRAMGG;
-        this.TICHDIEM = TICHDIEM;
         this.THANHTIEN = THANHTIEN;
         this.TRANGTHAI = TRANGTHAI;
-    }
-
-    public HOADON() {
+        this.TenKH = TenKH;
+        this.SDT = SDT;
+        this.DiaChi = DiaChi;
+        this.HinhThucTT = HinhThucTT;
+        this.LyDo = LyDo;
     }
 
     public int getID_HD() {
@@ -49,14 +56,6 @@ public class HOADON {
 
     public void setMATAIKHOAN(int MATAIKHOAN) {
         this.MATAIKHOAN = MATAIKHOAN;
-    }
-
-    public int getMAKH() {
-        return MAKH;
-    }
-
-    public void setMAKH(int MAKH) {
-        this.MAKH = MAKH;
     }
 
     public Date getNGAYLAP() {
@@ -83,14 +82,6 @@ public class HOADON {
         this.PHANTRAMGG = PHANTRAMGG;
     }
 
-    public float getTICHDIEM() {
-        return TICHDIEM;
-    }
-
-    public void setTICHDIEM(float TICHDIEM) {
-        this.TICHDIEM = TICHDIEM;
-    }
-
     public float getTHANHTIEN() {
         return THANHTIEN;
     }
@@ -105,6 +96,46 @@ public class HOADON {
 
     public void setTRANGTHAI(int TRANGTHAI) {
         this.TRANGTHAI = TRANGTHAI;
+    }
+
+    public String getTenKH() {
+        return TenKH;
+    }
+
+    public void setTenKH(String TenKH) {
+        this.TenKH = TenKH;
+    }
+
+    public String getSDT() {
+        return SDT;
+    }
+
+    public void setSDT(String SDT) {
+        this.SDT = SDT;
+    }
+
+    public String getDiaChi() {
+        return DiaChi;
+    }
+
+    public void setDiaChi(String DiaChi) {
+        this.DiaChi = DiaChi;
+    }
+
+    public boolean isHinhThucTT() {
+        return HinhThucTT;
+    }
+
+    public void setHinhThucTT(boolean HinhThucTT) {
+        this.HinhThucTT = HinhThucTT;
+    }
+
+    public String getLyDo() {
+        return LyDo;
+    }
+
+    public void setLyDo(String LyDo) {
+        this.LyDo = LyDo;
     }
     
     
