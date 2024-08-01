@@ -4,11 +4,18 @@
  */
 package view;
 
+import Dao.ChucVuDao;
+import Entity.CHUCVU;
+import Utils.MsgBox;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Admin
  */
 public class JDialogTaiKhoan extends javax.swing.JDialog {
+
+    ChucVuDao CVD = new ChucVuDao();
 
     /**
      * Creates new form NewJDialog
@@ -17,7 +24,23 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null); // Đặt cửa sổ ở trung tâm màn hình
+        fillTable();
+    }
 
+    private void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) tblChucVu.getModel();
+        model.setRowCount(0);
+        try {
+            for (CHUCVU cv : CVD.selectAll()) {
+                Object data[] = {
+                    cv.getID_CV(), cv.getTENCV(), cv.getMOTA()
+                };
+                model.addRow(data);
+            }
+            tblChucVu.setModel(model);
+        } catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu");
+        }
     }
 
     /**
@@ -103,7 +126,7 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        tblChucVu = new javax.swing.JTable();
         jButton12 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         jTextField9 = new javax.swing.JTextField();
@@ -758,17 +781,17 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
         jButton6.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jButton6.setText("A-Z");
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        tblChucVu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
                 {null, null, null}
             },
             new String [] {
-                "Họ và tên", "Địa chỉ", "Số điện thoại"
+                "Mã chức vụ", "Tên chức vụ", "Mô tả"
             }
         ));
-        jScrollPane4.setViewportView(jTable4);
+        jScrollPane4.setViewportView(tblChucVu);
 
         jButton12.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
@@ -1075,7 +1098,6 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
@@ -1093,5 +1115,6 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
     private javax.swing.JRadioButton jbtNHoatDong;
     private javax.swing.JRadioButton jbtNam;
     private javax.swing.JRadioButton jbtNu;
+    private javax.swing.JTable tblChucVu;
     // End of variables declaration//GEN-END:variables
 }
