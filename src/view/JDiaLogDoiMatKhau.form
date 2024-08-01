@@ -46,11 +46,11 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jPanel10" alignment="0" pref="585" max="32767" attributes="0"/>
+              <Component id="jPanel10" alignment="0" pref="589" max="32767" attributes="0"/>
               <Group type="102" alignment="0" attributes="0">
                   <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jPanel14" alignment="0" pref="555" max="32767" attributes="0"/>
+                      <Component id="jPanel14" alignment="0" pref="559" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="173" max="-2" attributes="0"/>
                           <Component id="jLabel9" min="-2" pref="228" max="-2" attributes="0"/>

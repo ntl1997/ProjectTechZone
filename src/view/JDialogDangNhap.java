@@ -21,12 +21,13 @@ public class JDialogDangNhap extends javax.swing.JDialog {
     public JDialogDangNhap(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
         
     }
       void dangNhap(){
     String tendn = txtTaiKhoan.getText();
     String mk = new String(txtMkhau.getPassword());
-    TAIKHOAN tdn = tkd.selectById(tendn);  // Sử dụng tên đăng nhập (TENDN)
+    TAIKHOAN tdn = tkd.selectById2(tendn);  // Sử dụng tên đăng nhập (TENDN)
     if (tdn == null) {
         MsgBox.alert(this, "Sai tên đăng nhập");
     } else if (!mk.equals(tdn.getMATKHAU())) {

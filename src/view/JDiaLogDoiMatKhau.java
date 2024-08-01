@@ -28,7 +28,7 @@ public class JDiaLogDoiMatKhau extends javax.swing.JDialog {
     }
      private void doiMatKhau() {
         String tenDN = txtTenDN.getText();
-       String matKhau = new String(txtMatKhau.getPassword());
+        String matKhau = new String(txtMatKhau.getPassword());
         String matKhauMoi = new String(txtMatKhauMoi.getPassword());
         String XNMKmoi = new String(txtXNmatKhauMoi.getPassword());
         if(!tenDN.equalsIgnoreCase (Auth.user.getTENDN())){
