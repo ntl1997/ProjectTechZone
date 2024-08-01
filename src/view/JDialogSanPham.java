@@ -44,6 +44,7 @@ public class JDialogSanPham extends javax.swing.JDialog {
         this.fillComboBoxDanhMuc();
         this.fillComboBoxHangSX();
         this.filltblHSX();
+        this.filltblLPK();
     }
 // SẢN PHẨM START
     private void fillTable() {
@@ -277,8 +278,8 @@ public class JDialogSanPham extends javax.swing.JDialog {
     }
     
     void updateHSXStatus() {
-        boolean edit = (this.row >= 0); // Có 1 dòng được chọn
-        boolean first = (this.row == 0); // Dòng đầu tiên
+        boolean edit = (this.row >= 0); 
+        boolean first = (this.row == 0); 
         boolean last = (this.row == tblHangSX.getRowCount() - 1);
         
         btnHSXFIRST.setEnabled(edit && !first);
@@ -317,7 +318,7 @@ public class JDialogSanPham extends javax.swing.JDialog {
             this.HSXclear();
             MsgBox.alert(this, "CẬP NHẬP HÃNG SẢN XUẤT THÀNH CÔNG");
         } catch (Exception e) {
-            MsgBox.alert(this, "CẬP NHẬP THẤT BẠI" + e);
+            MsgBox.alert(this, "CẬP NHẬP THẤT BẠI");
             System.out.println("LỖI KHI CẬP NHẬP: "+ e);
         }
     }
@@ -335,7 +336,7 @@ public class JDialogSanPham extends javax.swing.JDialog {
             this.HSXclear();
             MsgBox.alert(this, "XÓA HÃNG SẢN XUẤT THÀNH CÔNG");
         } catch (Exception e) {
-            MsgBox.alert(this, "XÓA THẤT BẠI" + e);
+            MsgBox.alert(this, "XÓA THẤT BẠI");
             System.out.println("LỖI KHI XÓA: "+ e);
         }
     }
@@ -374,6 +375,132 @@ public class JDialogSanPham extends javax.swing.JDialog {
     }
     
     // HANG SAN XUAT END
+    
+    // LOAI PHU KIEN
+    
+    void filltblLPK(){
+        DefaultTableModel model = (DefaultTableModel) tblLPK.getModel();
+        model.setRowCount(0);
+        try {
+            for(LOAIPK lpk: lpkdao.selectAll()){
+                Object data[] = {lpk.getTENLPK(), lpk.getMOTA()};
+                model.addRow(data);
+            }
+        } catch (Exception e) {
+            System.out.println("LOI LAY LPK" + e);
+        }
+    }
+    
+    public LOAIPK getLPKForm(){
+        LOAIPK lpk = new LOAIPK();
+        lpk.setTENLPK(txtTenLPK.getText());
+        lpk.setMOTA(txtMoTaLPK.getText());
+        return lpk;
+    }
+    
+    public void setLPKForm(LOAIPK lpk){
+        txtTenLPK.setText(lpk.getTENLPK());
+        txtMoTaLPK.setText(lpk.getMOTA());
+    }
+    
+    public void clearLPK(){
+        txtTenLPK.setText("");
+        txtMoTaLPK.setText("");    
+    }
+    
+    void updateLPKstatus(){
+        boolean edit = (this.row >= 0); 
+        boolean first = (this.row == 0); 
+        boolean last = (this.row == tblLPK.getRowCount() - 1);
+        
+        btnLPKFirst.setEnabled(edit && !first);
+        btnLPKPrev.setEnabled(edit && !first);
+        btnLPKNext.setEnabled(edit && !last);
+        btnLPKLast.setEnabled(edit && !last);
+    }
+    
+    void LPKedit(){
+        String mota = String.valueOf(tblLPK.getValueAt(this.row, 1));
+        int id = lpkdao.layIDLPK(mota);
+        LOAIPK lpk = lpkdao.selectById(id);
+        setLPKForm(lpk);
+        this.updateLPKstatus();
+    }
+    
+    public void LPKinsert(){
+        LOAIPK lpk = this.getLPKForm();
+        try {
+            lpkdao.insert(lpk);
+            this.filltblLPK();
+            this.clearLPK();
+            MsgBox.alert(this, "THÊM LOẠI PHỤ KIỆN THÀNH CÔNG");
+        } catch (Exception e) {
+             MsgBox.alert(this, "THÊM LOẠI PHỤ KIỆN THẤT BẠI");
+             System.out.println("THÊM THẤT BẠI" + e);
+        }
+    }
+    
+    public void LPKupdate(){
+        LOAIPK lpk = this.getLPKForm();
+        try {
+            int vitri = tblLPK.getSelectedRow();
+            String mota = String.valueOf(tblLPK.getValueAt(vitri, 1));            
+            int id = lpkdao.layIDLPK(mota);
+            lpk.setID_LPK(id);
+            lpkdao.update(lpk);
+            this.filltblLPK();
+            this.clearLPK();
+            MsgBox.alert(this, "CẬP NHẬP LOẠI PHỤ KIỆN THÀNH CÔNG");
+        } catch (Exception e) {
+            MsgBox.alert(this, "CẬP NHẬP THẤT BẠI");
+            System.out.println("LỖI KHI CẬP NHẬP: "+ e);
+        }
+    }
+    
+    public void LPKdelete(){
+        LOAIPK lpk = this.getLPKForm();
+        if(MsgBox.confirm(this, "BẠN MUỐN XÓA LOẠI PHỤ KIỆN NÀY KHÔNG?")){
+        try {
+            int vitri = tblLPK.getSelectedRow();
+            String mota = String.valueOf(tblLPK.getValueAt(vitri, 1));            
+            int id = lpkdao.layIDLPK(mota);
+            lpk.setID_LPK(id);
+            lpkdao.delete(id);
+            this.filltblLPK();
+            this.clearLPK();
+            MsgBox.alert(this, "XÓA LOẠI PHỤ KIỆN THÀNH CÔNG");
+        } catch (Exception e) {
+            MsgBox.alert(this, "XÓA THẤT BẠI");
+            System.out.println("LỖI KHI XÓA: "+ e);
+        }
+    }   
+    }
+    
+    void LPKFirst() {
+        this.row = 0;
+        this.LPKedit();
+    }
+
+    void LPKPrev() {
+        if (this.row > 0) {
+            this.row--;
+            this.LPKedit();
+        }
+    }
+
+    void LPKNext() {
+        if (this.row < tblLPK.getRowCount() - 1) {
+            this.row++;
+            this.LPKedit();
+        }
+    }
+
+    void LPKLast() {
+        this.row = tblLPK.getRowCount() - 1;
+        this.LPKedit();
+    }
+    
+    // LOAI PHU KIEN END
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -435,24 +562,24 @@ public class JDialogSanPham extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
+        txtTenLPK = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
-        jButton23 = new javax.swing.JButton();
-        jButton24 = new javax.swing.JButton();
-        jButton25 = new javax.swing.JButton();
-        jButton26 = new javax.swing.JButton();
+        btnLPKFirst = new javax.swing.JButton();
+        btnLPKPrev = new javax.swing.JButton();
+        btnLPKNext = new javax.swing.JButton();
+        btnLPKLast = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
-        jButton32 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
-        jButton19 = new javax.swing.JButton();
-        jButton20 = new javax.swing.JButton();
+        tblLPK = new javax.swing.JTable();
+        btnLPKCapNhat = new javax.swing.JButton();
+        btnXoaLPK = new javax.swing.JButton();
+        btnThemLPK = new javax.swing.JButton();
+        btnLPKClear = new javax.swing.JButton();
         jButton22 = new javax.swing.JButton();
         jComboBox3 = new javax.swing.JComboBox<>();
         jButton28 = new javax.swing.JButton();
         jButton33 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtMoTaLPK = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -1043,29 +1170,49 @@ public class JDialogSanPham extends javax.swing.JDialog {
         jLabel18.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jLabel18.setText("Loại phụ kiện");
 
-        jTextField11.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
-        jTextField11.addActionListener(new java.awt.event.ActionListener() {
+        txtTenLPK.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+        txtTenLPK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField11ActionPerformed(evt);
+                txtTenLPKActionPerformed(evt);
             }
         });
 
         jLabel19.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jLabel19.setText("Mô tả");
 
-        jButton23.setBackground(new java.awt.Color(255, 255, 0));
-        jButton23.setText("<<");
+        btnLPKFirst.setBackground(new java.awt.Color(255, 255, 0));
+        btnLPKFirst.setText("<<");
+        btnLPKFirst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLPKFirstActionPerformed(evt);
+            }
+        });
 
-        jButton24.setBackground(new java.awt.Color(255, 255, 0));
-        jButton24.setText("<");
+        btnLPKPrev.setBackground(new java.awt.Color(255, 255, 0));
+        btnLPKPrev.setText("<");
+        btnLPKPrev.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLPKPrevActionPerformed(evt);
+            }
+        });
 
-        jButton25.setBackground(new java.awt.Color(255, 255, 0));
-        jButton25.setText(">");
+        btnLPKNext.setBackground(new java.awt.Color(255, 255, 0));
+        btnLPKNext.setText(">");
+        btnLPKNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLPKNextActionPerformed(evt);
+            }
+        });
 
-        jButton26.setBackground(new java.awt.Color(255, 255, 0));
-        jButton26.setText(">>");
+        btnLPKLast.setBackground(new java.awt.Color(255, 255, 0));
+        btnLPKLast.setText(">>");
+        btnLPKLast.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLPKLastActionPerformed(evt);
+            }
+        });
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tblLPK.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -1076,40 +1223,60 @@ public class JDialogSanPham extends javax.swing.JDialog {
                 "LOẠI PHỤ KIỆN", "MÔ TẢ"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        tblLPK.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblLPKMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tblLPK);
 
-        jButton32.setBackground(new java.awt.Color(153, 255, 204));
-        jButton32.setFont(new java.awt.Font("Segoe UI Semibold", 0, 10)); // NOI18N
-        jButton32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/22_1.png"))); // NOI18N
-        jButton32.setText("Cập nhật");
-        jButton32.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton32.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton32.addActionListener(new java.awt.event.ActionListener() {
+        btnLPKCapNhat.setBackground(new java.awt.Color(153, 255, 204));
+        btnLPKCapNhat.setFont(new java.awt.Font("Segoe UI Semibold", 0, 10)); // NOI18N
+        btnLPKCapNhat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/22_1.png"))); // NOI18N
+        btnLPKCapNhat.setText("Cập nhật");
+        btnLPKCapNhat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnLPKCapNhat.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLPKCapNhat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton32ActionPerformed(evt);
+                btnLPKCapNhatActionPerformed(evt);
             }
         });
 
-        jButton13.setBackground(new java.awt.Color(255, 102, 102));
-        jButton13.setFont(new java.awt.Font("Segoe UI Semibold", 0, 10)); // NOI18N
-        jButton13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/14.png"))); // NOI18N
-        jButton13.setText("XÓA");
-        jButton13.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton13.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnXoaLPK.setBackground(new java.awt.Color(255, 102, 102));
+        btnXoaLPK.setFont(new java.awt.Font("Segoe UI Semibold", 0, 10)); // NOI18N
+        btnXoaLPK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/14.png"))); // NOI18N
+        btnXoaLPK.setText("XÓA");
+        btnXoaLPK.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnXoaLPK.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnXoaLPK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaLPKActionPerformed(evt);
+            }
+        });
 
-        jButton19.setBackground(new java.awt.Color(153, 204, 255));
-        jButton19.setFont(new java.awt.Font("Segoe UI Semibold", 0, 10)); // NOI18N
-        jButton19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/24_1.png"))); // NOI18N
-        jButton19.setText("THÊM");
-        jButton19.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton19.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnThemLPK.setBackground(new java.awt.Color(153, 204, 255));
+        btnThemLPK.setFont(new java.awt.Font("Segoe UI Semibold", 0, 10)); // NOI18N
+        btnThemLPK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/24_1.png"))); // NOI18N
+        btnThemLPK.setText("THÊM");
+        btnThemLPK.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnThemLPK.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnThemLPK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemLPKActionPerformed(evt);
+            }
+        });
 
-        jButton20.setBackground(new java.awt.Color(153, 153, 153));
-        jButton20.setFont(new java.awt.Font("Segoe UI Semibold", 0, 10)); // NOI18N
-        jButton20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/25_1.png"))); // NOI18N
-        jButton20.setText("Làm mới");
-        jButton20.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton20.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLPKClear.setBackground(new java.awt.Color(153, 153, 153));
+        btnLPKClear.setFont(new java.awt.Font("Segoe UI Semibold", 0, 10)); // NOI18N
+        btnLPKClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/25_1.png"))); // NOI18N
+        btnLPKClear.setText("Làm mới");
+        btnLPKClear.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnLPKClear.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLPKClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLPKClearActionPerformed(evt);
+            }
+        });
 
         jButton22.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         jButton22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
@@ -1145,9 +1312,9 @@ public class JDialogSanPham extends javax.swing.JDialog {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane4.setViewportView(jTextArea1);
+        txtMoTaLPK.setColumns(20);
+        txtMoTaLPK.setRows(5);
+        jScrollPane4.setViewportView(txtMoTaLPK);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -1157,23 +1324,23 @@ public class JDialogSanPham extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jButton23)
+                        .addComponent(btnLPKFirst)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton24)
+                        .addComponent(btnLPKPrev)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton25)
+                        .addComponent(btnLPKNext)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton26))
+                        .addComponent(btnLPKLast))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(66, 66, 66)
                                 .addComponent(jLabel18))
-                            .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtTenLPK, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton19, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton32, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(btnThemLPK, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLPKCapNhat, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(51, 51, 51))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1183,8 +1350,8 @@ public class JDialogSanPham extends javax.swing.JDialog {
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnXoaLPK, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLPKClear, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(49, 49, 49)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -1200,7 +1367,7 @@ public class JDialogSanPham extends javax.swing.JDialog {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 758, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1209,12 +1376,12 @@ public class JDialogSanPham extends javax.swing.JDialog {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton19)
+                            .addComponent(btnThemLPK)
                             .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton32))
+                                .addComponent(btnLPKCapNhat))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(25, 25, 25)
                                 .addComponent(jButton28))))
@@ -1222,18 +1389,18 @@ public class JDialogSanPham extends javax.swing.JDialog {
                         .addGap(40, 40, 40)
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtTenLPK, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton13))
+                                .addComponent(btnXoaLPK))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(3, 3, 3)
                                 .addComponent(jButton33)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton20)
+                        .addComponent(btnLPKClear)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -1242,10 +1409,10 @@ public class JDialogSanPham extends javax.swing.JDialog {
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton26)
-                    .addComponent(jButton25)
-                    .addComponent(jButton24)
-                    .addComponent(jButton23)
+                    .addComponent(btnLPKLast)
+                    .addComponent(btnLPKNext)
+                    .addComponent(btnLPKPrev)
+                    .addComponent(btnLPKFirst)
                     .addComponent(jButton22))
                 .addGap(17, 17, 17)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1285,13 +1452,13 @@ public class JDialogSanPham extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnGiamActionPerformed
 
-    private void jButton32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton32ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton32ActionPerformed
+    private void btnLPKCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLPKCapNhatActionPerformed
+        LPKupdate();
+    }//GEN-LAST:event_btnLPKCapNhatActionPerformed
 
-    private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
+    private void txtTenLPKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenLPKActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField11ActionPerformed
+    }//GEN-LAST:event_txtTenLPKActionPerformed
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
         // TODO add your handling code here:
@@ -1408,6 +1575,39 @@ public class JDialogSanPham extends javax.swing.JDialog {
         HSXlast();
     }//GEN-LAST:event_btnHSXLASTActionPerformed
 
+    private void btnThemLPKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemLPKActionPerformed
+        LPKinsert();
+    }//GEN-LAST:event_btnThemLPKActionPerformed
+
+    private void btnXoaLPKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaLPKActionPerformed
+        LPKdelete();
+    }//GEN-LAST:event_btnXoaLPKActionPerformed
+
+    private void btnLPKClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLPKClearActionPerformed
+        clearLPK();
+    }//GEN-LAST:event_btnLPKClearActionPerformed
+
+    private void btnLPKFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLPKFirstActionPerformed
+        LPKFirst();
+    }//GEN-LAST:event_btnLPKFirstActionPerformed
+
+    private void btnLPKPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLPKPrevActionPerformed
+        LPKPrev();
+    }//GEN-LAST:event_btnLPKPrevActionPerformed
+
+    private void btnLPKNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLPKNextActionPerformed
+        LPKNext();
+    }//GEN-LAST:event_btnLPKNextActionPerformed
+
+    private void btnLPKLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLPKLastActionPerformed
+        LPKLast();
+    }//GEN-LAST:event_btnLPKLastActionPerformed
+
+    private void tblLPKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLPKMouseClicked
+        this.row = tblLPK.rowAtPoint(evt.getPoint());
+        LPKedit();
+    }//GEN-LAST:event_tblLPKMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -1458,6 +1658,12 @@ public class JDialogSanPham extends javax.swing.JDialog {
     private javax.swing.JButton btnHSXLAST;
     private javax.swing.JButton btnHSXNEXT;
     private javax.swing.JButton btnHSXPREV;
+    private javax.swing.JButton btnLPKCapNhat;
+    private javax.swing.JButton btnLPKClear;
+    private javax.swing.JButton btnLPKFirst;
+    private javax.swing.JButton btnLPKLast;
+    private javax.swing.JButton btnLPKNext;
+    private javax.swing.JButton btnLPKPrev;
     private javax.swing.JButton btnLamMoiHangSX;
     private javax.swing.JButton btnLast;
     private javax.swing.JButton btnMoi;
@@ -1467,23 +1673,17 @@ public class JDialogSanPham extends javax.swing.JDialog {
     private javax.swing.JButton btnTang;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnThemHangSX;
+    private javax.swing.JButton btnThemLPK;
     private javax.swing.JButton btnXoa;
     private javax.swing.JButton btnXoaHangSX;
+    private javax.swing.JButton btnXoaLPK;
     private javax.swing.JComboBox<String> cboDanhMuc;
     private javax.swing.JComboBox<String> cboHangSX;
     private javax.swing.JComboBox<String> cboSapXep;
     private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton22;
-    private javax.swing.JButton jButton23;
-    private javax.swing.JButton jButton24;
-    private javax.swing.JButton jButton25;
-    private javax.swing.JButton jButton26;
     private javax.swing.JButton jButton28;
-    private javax.swing.JButton jButton32;
     private javax.swing.JButton jButton33;
     private javax.swing.JButton jButton34;
     private javax.swing.JButton jButton35;
@@ -1508,17 +1708,17 @@ public class JDialogSanPham extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField11;
     private javax.swing.JLabel lblAnh;
     private javax.swing.JTable tblHangSX;
+    private javax.swing.JTable tblLPK;
     private javax.swing.JTable tblSanPham;
     private javax.swing.JTextField txtGiaBan;
     private javax.swing.JTextField txtMoTa;
     private javax.swing.JTextArea txtMoTaHang;
+    private javax.swing.JTextArea txtMoTaLPK;
     private javax.swing.JTextField txtSoLuong;
     private javax.swing.JTextField txtTenHang;
+    private javax.swing.JTextField txtTenLPK;
     private javax.swing.JTextField txtTenSP;
     private javax.swing.JTextField txtTimKiemSP;
     // End of variables declaration//GEN-END:variables
