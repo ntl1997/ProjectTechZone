@@ -13,8 +13,12 @@ import java.sql.*;
 public class ConnectDB {
     public static Connection con = null;
     public static Connection getConnect() {
-        String strDbUrl = "jdbc:sqlserver://localhost:1436; databaseName=TECHZONE1;user=sa;password=1Secure*Password1;"
-                + "encrypt=true;trustServerCertificate=true";
+        String strDbUrl = "jdbc:sqlserver://localhost:1433;"
+                + " databaseName=TECHZONE;"
+                + "user=sa;"
+                + "password=Matkhau123@;"
+                + "encrypt=true;"
+                + "trustServerCertificate=true";
         try {
             con = DriverManager.getConnection(strDbUrl);
             System.out.println("Ket Noi Thanh Cong");
