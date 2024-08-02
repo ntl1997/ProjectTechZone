@@ -126,7 +126,7 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
         try {
             Object matk2 = tblNV.getValueAt(this.row, 0);
             int matk = (int) matk2;
-            TAIKHOAN tk = tkd.selectById(String.valueOf(matk));
+            TAIKHOAN tk = tkd.selectById(matk);
             if(tk != null){
                 setForm(tk);            
                 this.updateStatus();
@@ -223,7 +223,7 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
     public void delete(){
         if(MsgBox.confirm(this, "Bạn muốn xóa nhân viên này?")){
             try {
-                     String matk = String.valueOf(tblNV.getValueAt(this.row, 0));
+                     int matk = (int)(tblNV.getValueAt(this.row, 0));
                      tkd.delete(matk);
                      this.filltableNV();
                      this.clear();
