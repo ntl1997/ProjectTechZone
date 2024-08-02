@@ -14,7 +14,9 @@ import Utils.MsgBox;
  * @author Admin
  */
 public class JDialogDangNhap extends javax.swing.JDialog {
+
     TaiKhoanDao tkd = new TaiKhoanDao();
+
     /**
      * Creates new form DangNhapJDialog
      */
@@ -24,29 +26,33 @@ public class JDialogDangNhap extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         setTitle("TechZone Đăng Nhập");
     }
-      
-    void dangNhap(){
-    String tendn = txtTaiKhoan.getText();
-    String mk = new String(txtMkhau.getPassword());
-    TAIKHOAN tdn = tkd.selectByTenDN(tendn);  // Sử dụng tên đăng nhập (TENDN)
-    if (tdn == null) {
-        MsgBox.alert(this, "Sai tên đăng nhập");
-    } else if (!mk.equals(tdn.getMATKHAU())) {
-        MsgBox.alert(this, "Sai mật khẩu");
-    } else {
-        Auth.user = tdn;
-        this.dispose();
+    void dangNhap() {
+        String tendn = txtTaiKhoan.getText();
+        String mk = new String(txtMkhau.getPassword());
+        if (tendn.isEmpty()) {
+            MsgBox.alert(this, "Ten dang nhap khong duoc de trong!");
+            return;
+        }
+        if (mk.isEmpty()) {
+            MsgBox.alert(this, "Mat khau khong duoc de trong!");
+        }
+        TAIKHOAN taikhoan = tkd.selectByTenDN(tendn);  // Sử dụng tên đăng nhập (TENDN)
+        if (taikhoan == null) {
+            MsgBox.alert(this, "Sai tên đăng nhập");
+        } else if (!mk.equals(taikhoan.getMATKHAU())) {
+            MsgBox.alert(this, "Sai mật khẩu");
+        } else {
+            Auth.user = taikhoan;
+            System.out.println("Mã tài khoản: " + Auth.user.getID_TK());
+            this.dispose();
+        }
     }
-}
 
-    void ketThuc(){
-          if(MsgBox.confirm(this, "Bạn muốn kết thúc ứng dụng không")){
-              System.exit(0);
-          }
-      }
-      
-    
-
+    void ketThuc() {
+        if (MsgBox.confirm(this, "Bạn muốn kết thúc ứng dụng không")) {
+            System.exit(0);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -267,7 +273,7 @@ public class JDialogDangNhap extends javax.swing.JDialog {
     }//GEN-LAST:event_txtMkhauActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       dangNhap();
+        dangNhap();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
