@@ -43,7 +43,7 @@ public class JDialogDangNhap extends javax.swing.JDialog {
             MsgBox.alert(this, "Sai mật khẩu");
         } else {
             Auth.user = taikhoan;
-            System.out.println("Mã tài khoản: " + Auth.user.getID_TK());
+//            System.out.println("Mã tài khoản: " + Auth.user.getID_TK());
             this.dispose();
         }
     }
