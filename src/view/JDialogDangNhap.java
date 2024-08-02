@@ -17,6 +17,7 @@ public class JDialogDangNhap extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         init();
+        setLocationRelativeTo(null);
     }
     void init() {
         setTitle("TechZone");
