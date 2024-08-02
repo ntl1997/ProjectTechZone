@@ -21,7 +21,8 @@ public class JDialogDangNhap extends javax.swing.JDialog {
     public JDialogDangNhap(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+        setLocationRelativeTo(null);
+        setTitle("TechZone Đăng Nhập");
     }
       
     void dangNhap(){

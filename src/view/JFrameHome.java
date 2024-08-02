@@ -47,6 +47,18 @@ public class JFrameHome extends javax.swing.JFrame {
             }
 
         }).start();
+//        new Timer(1000, new ActionListener() {
+//            SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+//
+//            @Override
+//            // ngay và gio
+//            public void actionPerformed(ActionEvent e) {
+//                lblDongHo1.setText(format.format(new Date()));
+//                lblNgayThang.setText(dateFormat.format(new Date()));
+//            }
+//
+//        }).start();
         this.openWelcome(new Frame());
         this.openLogin(new Frame());
     }
