@@ -1,7 +1,5 @@
-/nbproject/private/
+# Ignore build directory
 /build/
-<<<<<<< HEAD
-/build
-=======
+# Ignore dist directory
 /dist/
->>>>>>> dev
+/build/classes
