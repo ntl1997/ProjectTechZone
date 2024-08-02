@@ -71,9 +71,17 @@ public class ChiTietHDDao extends TechZoneDao<CHITIETHOADON, Integer> {
         }
         return list;
     }
-
-    public List<HOADON> selectByKeyword(String keyword) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<CHITIETHOADON> selectByMaHD(int maHD) {
+        String sql = "SELECT * FROM CHITIETHOADON WHERE MaHD = ?";
+        return selectBySql(sql, maHD);
     }
-
+    public CHITIETHOADON selectByMaHD_MaSP(int maHD, int maSP) {
+        String sql = "SELECT * FROM CHITIETHOADON WHERE MaHD = ? AND MaSP = ?";
+        List<CHITIETHOADON> list = selectBySql(sql, maHD, maSP);
+        return !list.isEmpty() ? list.get(0) : null;
+    }
+    public void deleteByMaHD_MaSP(int maHD, int maSP) {
+        String sql = "DELETE FROM CHITIETHOADON WHERE MaHD = ? AND MaSP = ?";
+        XJdbc.update(sql, maHD, maSP);
+    }
 }
