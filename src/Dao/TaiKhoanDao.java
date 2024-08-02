@@ -44,7 +44,7 @@ public class TaiKhoanDao extends TechZoneDao<TAIKHOAN, Integer> {
     }
 
     public TAIKHOAN selectByTenDN(String TENDN) {
-        List<TAIKHOAN> list = this.selectBySql2(SELECT_BY_TENDN, TENDN);
+        List<TAIKHOAN> list = this.selectBySql(SELECT_BY_TENDN, TENDN);
         if (list.isEmpty()) {
             return null;
         }
@@ -82,19 +82,19 @@ public class TaiKhoanDao extends TechZoneDao<TAIKHOAN, Integer> {
         return list;
     }
 
-    public List<TAIKHOAN> selectBySql2(String sql, Object... args) {
-        List<TAIKHOAN> list = new ArrayList<>();
-        try (PreparedStatement pstmt = XJdbc.getStatement(sql, args); ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                TAIKHOAN tk = new TAIKHOAN();
-                tk.setTENDN(rs.getString("TENDN"));
-                tk.setMATKHAU(rs.getString("MATKHAU"));
-                list.add(tk);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
+//    public List<TAIKHOAN> selectBySql2(String sql, Object... args) {
+//        List<TAIKHOAN> list = new ArrayList<>();
+//        try (PreparedStatement pstmt = XJdbc.getStatement(sql, args); ResultSet rs = pstmt.executeQuery()) {
+//            while (rs.next()) {
+//                TAIKHOAN tk = new TAIKHOAN();
+//                tk.setTENDN(rs.getString("TENDN"));
+//                tk.setMATKHAU(rs.getString("MATKHAU"));
+//                list.add(tk);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return list;
+//    }
 
 }
