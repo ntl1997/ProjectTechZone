@@ -48,6 +48,16 @@ public class JDialogBanHang extends javax.swing.JDialog {
         setIconImage(XImage.getAppIcon());
         setLocationRelativeTo(null); // Đặt cửa sổ ở trung tâm màn hình
         this.fillTableSanPham();
+        this.fillTableHoaDon();
+        // Sự kiện lắng nghe txtGiamGia khi người dùng ấn Enter
+        txtGiamGia.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                    applyDiscount();
+                }
+            }
+        });
     }
 
     // Đổ dữ liệu lên bảng Sản Phẩm
@@ -108,6 +118,27 @@ public class JDialogBanHang extends javax.swing.JDialog {
         tblHoaDon.setModel(model);
     }
 
+    private void applyDiscount() {
+        try {
+            int hdRow = tblHoaDon.getSelectedRow();
+            if (hdRow < 0) {
+                MsgBox.alert(this, "Vui lòng chọn hóa đơn");
+                return;
+            }
+
+            float phanTramGG = Float.parseFloat(txtGiamGia.getText());
+            float tongTien = Float.parseFloat(txtTongTien.getText());
+            float soTienDuocGiam = tongTien * (phanTramGG / 100);
+            float khachCanTra = tongTien - soTienDuocGiam;
+
+            txtTruTienGiamGia.setText(String.valueOf(soTienDuocGiam));
+            txtKhachCanTra.setText(String.valueOf(khachCanTra));
+
+        } catch (NumberFormatException e) {
+            MsgBox.alert(this, "Vui lòng nhập số hợp lệ cho giảm giá");
+        }
+    }
+
     private void taoHoaDon() {
         try {
             HOADON hd = getForm();
@@ -117,6 +148,7 @@ public class JDialogBanHang extends javax.swing.JDialog {
             MsgBox.alert(this, "Thêm hóa đơn thành công");
         } catch (Exception e) {
             MsgBox.alert(this, "Thêm hóa đơn thất bại");
+            e.printStackTrace();
         }
 
     }
@@ -126,31 +158,34 @@ public class JDialogBanHang extends javax.swing.JDialog {
         int maHD = (int) tblHoaDon.getValueAt(hdRow, 0);
         int maSP = (int) tblSanPham.getValueAt(spRow, 0);
         int slTon = (int) tblSanPham.getValueAt(spRow, 3);
-        // Kiểm tra sản phẩm chọn có trong giỏ hàng chưa 
-        // TH1: nếu có thì tăng số lượng lên 1
+
         boolean isInCart = false;
+
+        // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
         for (int i = 0; i < tblGioHang.getRowCount(); i++) {
             int maSP_GioHang = (int) tblGioHang.getValueAt(i, 0);
             int sl_GioHang = (int) tblGioHang.getValueAt(i, 3);
+
             if (maSP_GioHang == maSP) {
+                isInCart = true;
+
                 if (sl_GioHang < slTon) {
                     CHITIETHOADON cthd = ctdao.selectByMaHD_MaSP(maHD, maSP);
-                    int soluong = (int) tblGioHang.getValueAt(i, 3) + 1;
+                    int soluong = sl_GioHang + 1;
                     cthd.setSOLUONG(soluong);
                     ctdao.update(cthd);
                 } else {
                     MsgBox.alert(this, "Sản phẩm này hiện đang hết hàng");
                 }
+                break; // Thoát khỏi vòng lặp khi đã cập nhật số lượng
             }
-            isInCart = true;
-            break;
         }
 
-        // TH2: nếu chưa có thì tiến hành thêm mới sp vào giỏ hàng
+        // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới
         if (!isInCart) {
             CHITIETHOADON cthd = new CHITIETHOADON();
             float giaBan = (float) tblSanPham.getValueAt(spRow, 2);
-            cthd.setID_HDCT(maHD);
+            cthd.setMAHD(maHD);
             cthd.setMASP(maSP);
             cthd.setSOLUONG(1);
             cthd.setGIABAN(giaBan);
@@ -159,6 +194,7 @@ public class JDialogBanHang extends javax.swing.JDialog {
             ctdao.insert(cthd);
         }
 
+        // Cập nhật lại bảng giỏ hàng và tổng tiền
         this.fillTableGioHang(hdRow);
         updateThanhTien(hdRow);
         setForm(hdRow);
@@ -209,8 +245,11 @@ public class JDialogBanHang extends javax.swing.JDialog {
         int maHD = (int) tblHoaDon.getValueAt(row, 0);
         HOADON hd = hddao.selectById(maHD);
         float thanhTien = getThanhTien();
-        float giamGia = Float.parseFloat(txtGiamGia.getText());
+//        float giamGia = Float.parseFloat(txtGiamGia.getText());
+//        hd.setTHANHTIEN(thanhTien * (1 - (giamGia / 100)));
+        float giamGia = txtGiamGia.getText().isBlank() ? 0 : Float.parseFloat(txtGiamGia.getText());
         hd.setTHANHTIEN(thanhTien * (1 - (giamGia / 100)));
+
         hddao.update(hd);
     }
 
@@ -224,15 +263,17 @@ public class JDialogBanHang extends javax.swing.JDialog {
     }
 
     HOADON getForm() {
+//        System.out.println("Mã tài khoản: " + Auth.user.getID_TK());
         HOADON hd = new HOADON();
         hd.setMATAIKHOAN(Auth.user.getID_TK());
-        hd.setSDT(txtSDT.getText());
-        hd.setTenKH(txtTenKH.getText());
-        hd.setDiaChi(txtDiaChi.getText());
-        hd.setPHANTRAMGG(Integer.parseInt(txtGiamGia.getText()));
+        hd.setSDT(txtSDT.getText().isBlank() ? "Không có" : txtSDT.getText());
+        hd.setTenKH(txtTenKH.getText().isBlank() ? "Khách lẻ" : txtTenKH.getText());
+        hd.setDiaChi(txtDiaChi.getText().isBlank() ? "Không có" : txtDiaChi.getText());
+//        hd.setPHANTRAMGG(txtGiamGia.getText().isBlank() ? 0 : Integer.parseInt(txtGiamGia.getText()));
         boolean ht_ThanhToan = cboHinhThucTT.getSelectedIndex() == 1;
         hd.setHinhThucTT(ht_ThanhToan);
-        hd.setTHANHTIEN(0);
+//        hd.setTHANHTIEN(0);
+//        hd.setTONGTIEN(0);  // Khởi tạo TONGTIEN với giá trị 0
         Date ngayTao = XDate.toDate(LocalDate.now().toString(), "yyyy-MM-dd");
         hd.setNGAYLAP(ngayTao);
         hd.setTRANGTHAI(0);
@@ -244,7 +285,7 @@ public class JDialogBanHang extends javax.swing.JDialog {
         HOADON hd = hddao.selectById(maHD);
 
         double thanhTien = getThanhTien();
-        double truTienGiamGia = thanhTien * (Float.parseFloat(txtGiamGia.getText()) / 100);
+        double truTienGiamGia = thanhTien * (hd.getPHANTRAMGG() / 100);
         double khachCanTra = thanhTien - truTienGiamGia;
         txtTenKH.setText(hd.getTenKH());
         txtTenKH.setEnabled(false);
@@ -256,7 +297,7 @@ public class JDialogBanHang extends javax.swing.JDialog {
         txtDiaChi.setEnabled(false);
 
         txtGiamGia.setText(String.valueOf(hd.getPHANTRAMGG()));
-        txtGiamGia.setEnabled(false);
+//        txtGiamGia.setEnabled(false);
 
         txtTongTien.setText(String.valueOf(thanhTien));
         txtGiamGia.setText(String.valueOf(truTienGiamGia));
@@ -274,14 +315,15 @@ public class JDialogBanHang extends javax.swing.JDialog {
         txtDiaChi.setEnabled(true);
         txtDiaChi.setText("");
 
-        txtGiamGia.setEnabled(true);
+//        txtGiamGia.setEnabled(true);
         txtGiamGia.setText("");
 
         txtKhachCanTra.setText("");
-        txtGiamGia.setText("");
-        txtKhachCanTra.setText("");
         txtTienKhachDua.setText("");
         txtTienThua.setText("");
+        
+        txtTongTien.setText("");
+        txtTruTienGiamGia.setText("");
     }
 
     // Kiểm tra các thông tin khi đặt hàng
@@ -787,6 +829,17 @@ public class JDialogBanHang extends javax.swing.JDialog {
         // TODO add your handling code here:
         int row = tblHoaDon.getSelectedRow();
         if (row >= 0) {
+            HOADON hd = hddao.selectById((int) tblHoaDon.getValueAt(row, 0));
+
+            float khachCanTra = Float.parseFloat(txtKhachCanTra.getText());
+            float tongTien = Float.parseFloat(txtTongTien.getText());
+            int phanTramGG = Integer.parseInt(txtGiamGia.getText());
+
+            hd.setTHANHTIEN(khachCanTra);
+            hd.setTONGTIEN(tongTien);
+            hd.setPHANTRAMGG(phanTramGG);
+
+            hddao.update(hd);
             updateStatus(row, 1, "");
         }
     }//GEN-LAST:event_btnThanhToanActionPerformed
@@ -794,8 +847,8 @@ public class JDialogBanHang extends javax.swing.JDialog {
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
         // TODO add your handling code here:
         int row = tblHoaDon.getSelectedRow();
-        if (row>=0) {
-            String lyDoHuy =MsgBox.prompt(this, "Lý do hủy:");
+        if (row >= 0) {
+            String lyDoHuy = MsgBox.prompt(this, "Lý do hủy:");
             if (lyDoHuy != null) {
                 updateStatus(row, 2, lyDoHuy);
             }
@@ -838,7 +891,7 @@ public class JDialogBanHang extends javax.swing.JDialog {
         if (cboHinhThucTT.getSelectedIndex() == 1) {
             txtTienKhachDua.setEnabled(false);
             txtTienThua.setText("");
-        } else if(cboHinhThucTT.getSelectedIndex() == 0) {
+        } else if (cboHinhThucTT.getSelectedIndex() == 0) {
             txtTienKhachDua.setEnabled(true);
         }
     }//GEN-LAST:event_cboHinhThucTTActionPerformed
@@ -852,7 +905,7 @@ public class JDialogBanHang extends javax.swing.JDialog {
                 try {
                     float tienKhachDua = Float.parseFloat(txtTienKhachDua.getText());
                     float khachCanTra = Float.parseFloat(txtKhachCanTra.getText());
-                    float tienThua = tienKhachDua-khachCanTra;
+                    float tienThua = tienKhachDua - khachCanTra;
                     txtTienThua.setText(String.valueOf(tienThua));
                 } catch (NumberFormatException e) {
                     MsgBox.alert(this, "Mời nhập đúng số tiền (VNĐ)");
@@ -864,7 +917,7 @@ public class JDialogBanHang extends javax.swing.JDialog {
     private void tblGioHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblGioHangMouseClicked
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tblGioHang.getModel();
-                model.addTableModelListener((TableModelEvent e) -> {
+        model.addTableModelListener((TableModelEvent e) -> {
             if (e.getType() == TableModelEvent.UPDATE) {
                 int ghRow = tblGioHang.getSelectedRow();
                 int hdRow = tblHoaDon.getSelectedRow();
