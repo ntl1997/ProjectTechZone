@@ -5,7 +5,6 @@
 package view;
 
 import View.JDialogBanHang;
-import View.JDialogHoTro;
 import View.JDialogSanPham;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -91,11 +90,7 @@ public class JFrameHome extends javax.swing.JFrame {
     void openThongKe(int index) {
         new JDialogDoanhThu(this, true).setVisible(true);
     }
-    
-    void openGioiThieu() {
-        new JDialogHoTro(this, true).setVisible(true);
-    }
-    
+        
     void openDoiMatKhau() {
         new JDiaLogDoiMatKhau(this, true).setVisible(true);
     }
@@ -149,7 +144,6 @@ public class JFrameHome extends javax.swing.JFrame {
         jButton15 = new javax.swing.JButton();
         jButton16 = new javax.swing.JButton();
         jButton17 = new javax.swing.JButton();
-        jButton18 = new javax.swing.JButton();
         jButton19 = new javax.swing.JButton();
         jLabel40 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -534,17 +528,6 @@ public class JFrameHome extends javax.swing.JFrame {
             }
         });
 
-        jButton18.setBackground(new java.awt.Color(0, 102, 204));
-        jButton18.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButton18.setForeground(new java.awt.Color(255, 255, 255));
-        jButton18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/10.png"))); // NOI18N
-        jButton18.setText("Giới thiệu");
-        jButton18.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton18ActionPerformed(evt);
-            }
-        });
-
         jButton19.setBackground(new java.awt.Color(0, 102, 204));
         jButton19.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButton19.setForeground(new java.awt.Color(255, 255, 255));
@@ -589,7 +572,6 @@ public class JFrameHome extends javax.swing.JFrame {
             .addComponent(jButton16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator1)
@@ -615,9 +597,7 @@ public class JFrameHome extends javax.swing.JFrame {
                 .addComponent(jButton20)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton18)
-                .addGap(15, 15, 15)
+                .addGap(57, 57, 57)
                 .addComponent(jButton19)
                 .addGap(10, 10, 10))
         );
@@ -646,7 +626,7 @@ public class JFrameHome extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addComponent(jPlMenuSide1, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
+            .addComponent(jPlMenuSide1, javax.swing.GroupLayout.PREFERRED_SIZE, 603, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -668,10 +648,6 @@ public class JFrameHome extends javax.swing.JFrame {
     private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
         this.dangXuat();
     }//GEN-LAST:event_jButton19ActionPerformed
-
-    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
-        this.openGioiThieu();
-    }//GEN-LAST:event_jButton18ActionPerformed
 
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
         this.openThongKe(1);
@@ -754,7 +730,6 @@ public class JFrameHome extends javax.swing.JFrame {
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
-    private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton20;
     private javax.swing.JLabel jLabel11;
