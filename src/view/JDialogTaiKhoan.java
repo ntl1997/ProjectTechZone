@@ -77,7 +77,7 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
         if(cboVaiTroNV.getSelectedItem().equals("Nhân viên")){
             tk.setMACV(1);
         }else if(cboVaiTroNV.getSelectedItem().equals("Quản lý")){
-            tk.setID_TK(2);
+            tk.setMACV(2);
         }else{
             tk.setMACV(3);
         }
