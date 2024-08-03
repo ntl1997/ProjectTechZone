@@ -32,6 +32,7 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
         setLocationRelativeTo(null); // Đặt cửa sổ ở trung tâm màn hình
         this.filltableNV();
         this.fillcboCV();
+        this.filltblCV();
     }
     
     
@@ -293,7 +294,7 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
         try {
             cvd.insert(cv);
             this.filltblCV();
-            this.clear();
+            this.clearCV();
             MsgBox.alert(this, "THEM CHUC VU THANH CONG");
         } catch (Exception e) {
             System.out.println("THEM CHUC VU THAT BAI" + e);
@@ -302,11 +303,35 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
     }
     
     public void updateCV(){
-        
+        CHUCVU cv = this.getCVForm();
+        try {
+            int vitri = tblCV.getSelectedRow();
+            String mcv2 = String.valueOf(tblCV.getValueAt(vitri, 0));
+            int mcv = Integer.parseInt(mcv2);
+            cv.setID_CV(mcv);            
+            cvd.update(cv);
+            this.filltblCV();
+            this.clearCV();
+            MsgBox.alert(this, "SUA CHUC VU THANH CONG");
+        } catch (Exception e) {
+            System.out.println("SUA CHUC VU THAT BAI" + e);
+            MsgBox.alert(this, "SUA CHUC VU THAT BAI");
+        }
     }
     
     public void deleteCV(){
-        
+        if(MsgBox.confirm(this, "Bạn muốn xóa chức vụ này?")){
+            try {
+                     String macv = String.valueOf(tblCV.getValueAt(this.row, 0));
+                     cvd.delete(macv);
+                     this.filltblCV();
+                     this.clearCV();
+                     MsgBox.alert(this, "Xoa thanh cong");
+                 } catch (Exception e) {
+                     MsgBox.alert(this, "Xoa that bai");
+                     System.out.println("Xóa thất bại" + e);
+                 }
+        }
     }
     // CHUC VU END
     
@@ -1035,6 +1060,11 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
         btnThemCV.setText("THÊM");
         btnThemCV.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnThemCV.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnThemCV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemCVActionPerformed(evt);
+            }
+        });
 
         btnCapNhatCV.setBackground(new java.awt.Color(153, 255, 204));
         btnCapNhatCV.setFont(new java.awt.Font("Segoe UI Semibold", 0, 10)); // NOI18N
@@ -1096,9 +1126,14 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
                 {null, null, null}
             },
             new String [] {
-                "Họ và tên", "Địa chỉ", "Số điện thoại"
+                "ID_CV", "TÊN CHỨC VỤ", "MÔ TẢ"
             }
         ));
+        tblCV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCVMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tblCV);
 
         jButton12.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
@@ -1250,15 +1285,15 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void btnCapNhatCVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatCVActionPerformed
-        // TODO add your handling code here:
+        updateCV();
     }//GEN-LAST:event_btnCapNhatCVActionPerformed
 
     private void btnXoaCVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaCVActionPerformed
-        // TODO add your handling code here:
+        deleteCV();
     }//GEN-LAST:event_btnXoaCVActionPerformed
 
     private void btnClearCVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearCVActionPerformed
-        // TODO add your handling code here:
+        clearCV();
     }//GEN-LAST:event_btnClearCVActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
@@ -1321,6 +1356,15 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
     private void btnNVNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNVNextActionPerformed
         next();
     }//GEN-LAST:event_btnNVNextActionPerformed
+
+    private void btnThemCVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemCVActionPerformed
+        insertCV();
+    }//GEN-LAST:event_btnThemCVActionPerformed
+
+    private void tblCVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCVMouseClicked
+        this.row = tblCV.rowAtPoint(evt.getPoint());
+        CVedit();
+    }//GEN-LAST:event_tblCVMouseClicked
 
     /**
      * @param args the command line arguments
