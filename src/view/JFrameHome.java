@@ -30,22 +30,22 @@ public class JFrameHome extends javax.swing.JFrame {
         initComponents();
         init();
     }
-
+    
     void init() {
-
+        
         setTitle("TechZone");
         setLocationRelativeTo(null);
         new Timer(1000, new ActionListener() {
             SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
+            
             @Override
             // ngay và gio
             public void actionPerformed(ActionEvent e) {
                 lblDongHo1.setText(format.format(new Date()));
                 lblNgayThang.setText(dateFormat.format(new Date()));
             }
-
+            
         }).start();
 //        new Timer(1000, new ActionListener() {
 //            SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
@@ -62,11 +62,11 @@ public class JFrameHome extends javax.swing.JFrame {
         this.openWelcome(new Frame());
         this.openLogin(new Frame());
     }
-
+    
     void openWelcome(Frame parentFrame) {
         new JDialogChao(parentFrame, true).setVisible(true);
     }
-
+    
     void openLogin(Frame parentFrame) {
         new JDialogDangNhap(parentFrame, true).setVisible(true);
     }
@@ -75,30 +75,33 @@ public class JFrameHome extends javax.swing.JFrame {
     void dangXuat() {
         new JDialogDangNhap(this, true).setVisible(true);
     }
-
+    
     void openNhanVien() {
         new JDialogTaiKhoan(this, true).setVisible(true);
     }
-
+    
     void openSanPham() {
         new JDialogSanPham(this, true).setVisible(true);
     }
-
-
+    
     void openBanHang() {
         new JDialogBanHang(this, true).setVisible(true);
     }
-
+    
     void openThongKe(int index) {
         new JDialogDoanhThu(this, true).setVisible(true);
     }
-
+    
     void openGioiThieu() {
         new JDialogHoTro(this, true).setVisible(true);
     }
-
+    
     void openDoiMatKhau() {
         new JDiaLogDoiMatKhau(this, true).setVisible(true);
+    }
+
+    void openHoaDon() {
+        new JDialogHoaDon(this, true).setVisible(true);
     }
 
     ////////////////////////////////////
@@ -675,7 +678,7 @@ public class JFrameHome extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton17ActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-       
+        this.openHoaDon();
     }//GEN-LAST:event_jButton16ActionPerformed
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed

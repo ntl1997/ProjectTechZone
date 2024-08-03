@@ -43,7 +43,23 @@ public class ConnectDB {
         }
         return con;
     }
-//    public static void main(String[] args) {
-//        ConnectDB.getConnect();
+    
+//    public static Connection getConnect() {
+//        String strDbUrl = "jdbc:sqlserver://localhost:1433;"
+//                + " databaseName=TECHZONE;"
+//                + "user=Tung;"
+//                + "password=1;"
+//                + "encrypt=true;"
+//                + "trustServerCertificate=true";
+//        try {
+//            con = DriverManager.getConnection(strDbUrl);
+//            System.out.println("Ket Noi Thanh Cong");
+//        } catch (SQLException e) {
+//            System.out.println("Connect Loi: " + e);
+//        }
+//        return con;
 //    }
+    public static void main(String[] args) {
+        ConnectDB.getConnect();
+    }
 }

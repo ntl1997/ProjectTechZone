@@ -7,6 +7,7 @@ package view;
 import Dao.ChiTietHDDao;
 import Entity.CHITIETHOADON;
 import Utils.XImage;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -29,16 +30,19 @@ public class JDialogHoaDonChiTiet extends javax.swing.JDialog {
     void fillTable(int id){
         DefaultTableModel model = (DefaultTableModel) tblHDCT.getModel();
         model.setRowCount(0);
-        CHITIETHOADON cthd = cthddao.selectById(id);
-        Object data[] = {
-            id,
-            cthd.getMAHD(),
-            cthd.getMASP(),
-            cthd.getNGAYLAP(),
-            cthd.getGIABAN(),
-            cthd.getSOLUONG(),
-        };
-        model.addRow(data);
+        List<CHITIETHOADON> list = cthddao.selectByMaHD(id);
+        for (CHITIETHOADON cthd : list) {
+            Object[] data = {
+                cthd.getID_HDCT(),
+                id,
+                cthd.getMASP(),
+                cthd.getNGAYLAP(),
+                cthd.getGIABAN(),
+                cthd.getSOLUONG(),
+                cthd.getGIABAN() * cthd.getSOLUONG()
+            };
+            model.addRow(data);
+        }
         tblHDCT.setModel(model);
     }
 
@@ -60,17 +64,17 @@ public class JDialogHoaDonChiTiet extends javax.swing.JDialog {
 
         tblHDCT.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Mã HDCT", "Mã HD", "Mã SP", "Ngày lập", "Giá bán", "Số lượng"
+                "Mã HDCT", "Mã HD", "Mã SP", "Ngày lập", "Giá bán", "Số lượng", "Thành tiền"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, false
+                false, false, false, false, true, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
