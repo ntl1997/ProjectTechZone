@@ -24,12 +24,23 @@ public class ChiTietHDDao extends TechZoneDao<CHITIETHOADON, Integer> {
 
     @Override
     public void insert(CHITIETHOADON entity) {
-        XJdbc.update(Insert_SQL, entity.getMAHD(), entity.getMASP(), entity.getNGAYLAP(), entity.getGIABAN(), entity.getSOLUONG());
+        XJdbc.update(Insert_SQL, 
+                entity.getMAHD(), 
+                entity.getMASP(), 
+                entity.getNGAYLAP(), 
+                entity.getGIABAN(), 
+                entity.getSOLUONG());
     }
 
     @Override
     public void update(CHITIETHOADON entity) {
-        XJdbc.update(Update_SQL, entity.getMAHD(), entity.getMASP(), entity.getNGAYLAP(), entity.getGIABAN(), entity.getSOLUONG(), entity.getID_HDCT());
+        XJdbc.update(Update_SQL, 
+                entity.getMAHD(), 
+                entity.getMASP(), 
+                entity.getNGAYLAP(), 
+                entity.getGIABAN(), 
+                entity.getSOLUONG(), 
+                entity.getID_HDCT());
     }
 
     @Override
