@@ -192,6 +192,10 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
     }
     
     public void insert(){
+        if(txtTenNV.getText().isBlank() || txtTenDNNV.getText().isBlank() || txtEmailNV.getText().isBlank() || 
+                txtMatKhau.getText().isBlank() || txtNgaySinhNV.getText().isBlank() || txtDiaChiNV.getText().isBlank() || txtSDTNV.getText().isBlank()){
+            MsgBox.alert(this, "BẠN CHƯA ĐIỀN ĐỦ THÔNG TIN");
+        }else{
         TAIKHOAN tk = getForm();
         try {
             tkd.insert(tk);
@@ -203,8 +207,12 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
             System.out.println("Them that bai" + e);
         }
     }
-    
+    }   
     public void update(){
+        if(txtTenNV.getText().isBlank() || txtTenDNNV.getText().isBlank() || txtEmailNV.getText().isBlank() || 
+                txtMatKhau.getText().isBlank() || txtNgaySinhNV.getText().isBlank() || txtDiaChiNV.getText().isBlank() || txtSDTNV.getText().isBlank()){
+            MsgBox.alert(this, "BẠN CHƯA ĐIỀN ĐỦ THÔNG TIN");
+        }else{
         TAIKHOAN tk = this.getForm();
         try {
             int vitri = tblNV.getSelectedRow();
@@ -220,7 +228,7 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
             System.out.println("Sua that bai" + e);
         }
     }
-    
+    }    
     public void delete(){
         if(MsgBox.confirm(this, "Bạn muốn xóa nhân viên này?")){
             try {
@@ -290,6 +298,9 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
     }
     
     public void insertCV(){
+        if(txtTenCV.getText().isBlank() || traMoTaCV.getText().isBlank()){
+            MsgBox.alert(this, "BẠN CHƯA ĐIỀN ĐỦ THÔNG TIN");
+        }else{
         CHUCVU cv = this.getCVForm();
         try {
             cvd.insert(cv);
@@ -301,8 +312,11 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
             MsgBox.alert(this, "THEM CHUC VU THAT BAI");
         }
     }
-    
+    }    
     public void updateCV(){
+        if(txtTenCV.getText().isBlank() || traMoTaCV.getText().isBlank()){
+            MsgBox.alert(this, "BẠN CHƯA ĐIỀN ĐỦ THÔNG TIN");
+        }else{
         CHUCVU cv = this.getCVForm();
         try {
             int vitri = tblCV.getSelectedRow();
@@ -318,7 +332,7 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
             MsgBox.alert(this, "SUA CHUC VU THAT BAI");
         }
     }
-    
+}    
     public void deleteCV(){
         if(MsgBox.confirm(this, "Bạn muốn xóa chức vụ này?")){
             try {

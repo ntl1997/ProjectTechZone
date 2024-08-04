@@ -294,6 +294,9 @@ public class JDialogSanPham extends javax.swing.JDialog {
     }
     
     public void HSXinsert(){
+        if(txtTenHang.getText().isBlank() || txtMoTaHang.getText().isBlank()){
+            MsgBox.alert(this, "BẠN CHƯA ĐIỀN ĐỦ THÔNG TIN");
+        }else{
         HANGSX hsx = this.getHSXForm();
         try {
             hsxdao.insert(hsx);
@@ -305,8 +308,11 @@ public class JDialogSanPham extends javax.swing.JDialog {
             System.out.println("THÊM THẤT BẠI" + e);
         }
     }
-    
+}    
     public void HSXupdate(){
+        if(txtTenHang.getText().isBlank() || txtMoTaHang.getText().isBlank()){
+            MsgBox.alert(this, "BẠN CHƯA ĐIỀN ĐỦ THÔNG TIN");
+        }else{
         HANGSX hsx = this.getHSXForm();
         try {
             int vitri = tblHangSX.getSelectedRow();
@@ -322,7 +328,7 @@ public class JDialogSanPham extends javax.swing.JDialog {
             System.out.println("LỖI KHI CẬP NHẬP: "+ e);
         }
     }
-    
+    }    
     public void HSXdelete(){
         HANGSX hsx = this.getHSXForm();
         if(MsgBox.confirm(this, "BẠN MUỐN XÓA HÃNG SẢN XUẤT NÀY KHÔNG?")){
@@ -428,6 +434,9 @@ public class JDialogSanPham extends javax.swing.JDialog {
     }
     
     public void LPKinsert(){
+        if(txtTenLPK.getText().isBlank() || txtMoTaLPK.getText().isBlank()){
+            MsgBox.alert(this, "BẠN CHƯA ĐIỀN ĐỦ THÔNG TIN");
+        }else{
         LOAIPK lpk = this.getLPKForm();
         try {
             lpkdao.insert(lpk);
@@ -439,8 +448,11 @@ public class JDialogSanPham extends javax.swing.JDialog {
              System.out.println("THÊM THẤT BẠI" + e);
         }
     }
-    
+    }    
     public void LPKupdate(){
+        if(txtTenLPK.getText().isBlank() || txtMoTaLPK.getText().isBlank()){
+            MsgBox.alert(this, "BẠN CHƯA ĐIỀN ĐỦ THÔNG TIN");
+        }else{
         LOAIPK lpk = this.getLPKForm();
         try {
             int vitri = tblLPK.getSelectedRow();
@@ -456,7 +468,7 @@ public class JDialogSanPham extends javax.swing.JDialog {
             System.out.println("LỖI KHI CẬP NHẬP: "+ e);
         }
     }
-    
+    }   
     public void LPKdelete(){
         LOAIPK lpk = this.getLPKForm();
         if(MsgBox.confirm(this, "BẠN MUỐN XÓA LOẠI PHỤ KIỆN NÀY KHÔNG?")){
