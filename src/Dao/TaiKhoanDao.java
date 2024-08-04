@@ -96,5 +96,30 @@ public class TaiKhoanDao extends TechZoneDao<TAIKHOAN, Integer> {
 //        }
 //        return list;
 //    }
+    
+    private List<TAIKHOAN> getListOfArray(String sql, String[] cols, Object... args) {
+    List<TAIKHOAN> list = new ArrayList<>();
+    try (ResultSet rs = XJdbc.query(sql, args)) {
+        while (rs.next()) {
+            TAIKHOAN taiKhoan = new TAIKHOAN();
+            for (String columnName : cols) {
+                Object value = rs.getObject(columnName);
+                if ("TENNV".equals(columnName)) {
+                    taiKhoan.setTENNV((String) value);
+                }
+            }
+            list.add(taiKhoan);
+        }
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+    return list;
+}
+
+public List<TAIKHOAN> getTop3() {
+    String sql = "{CALL sp_LayNVXS}";
+    String[] cols = {"TENNV"};
+    return getListOfArray(sql, cols);
+}
 
 }
