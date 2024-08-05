@@ -2,21 +2,21 @@
 DROP DATABASE TECHZONE
 CREATE DATABASE TECHZONE
 use TECHZONE
-
+-- Tạo bảng Loại Phụ Kiện
 CREATE TABLE LOAIPK
 (
 	ID_LPK int IDENTITY(1,1) PRIMARY KEY,
 	TENLPK NVARCHAR(50) NOT NULL,
     MOTA NVARCHAR(100)
 )
-
+-- Tạo bảng Hãng SX
 CREATE TABLE HANGSX
 (
     ID_HANGSX int IDENTITY(1,1) PRIMARY KEY,
 	TENHANGSX NVARCHAR(50) NOT NULL,
     MOTA NVARCHAR(100)
 )
-
+-- Tạo bảng Sản Phẩm
 CREATE TABLE SANPHAM
 (
     ID_SP int IDENTITY(1,1) PRIMARY KEY,
@@ -30,14 +30,14 @@ CREATE TABLE SANPHAM
     FOREIGN KEY (MALOAIPK) REFERENCES LOAIPK (ID_LPK) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (MAHANGSX) REFERENCES HANGSX (ID_HANGSX) ON DELETE CASCADE ON UPDATE CASCADE
 )
-
+-- Tạo bảng Chức Vụ
 CREATE TABLE CHUCVU
 (
 	ID_CV INT IDENTITY(1,1) PRIMARY KEY,
 	TENCV NVARCHAR(50) NOT NULL,
 	MOTA NVARCHAR(100) NOT NULL
 )
-
+-- Tạo bảng Tài Khoản
 CREATE TABLE TAIKHOAN
 (
 	ID_TK INT IDENTITY(1,1) PRIMARY KEY,
@@ -53,7 +53,7 @@ CREATE TABLE TAIKHOAN
 	TRANGTHAI BIT NOT NULL,
     FOREIGN KEY (MACV) REFERENCES CHUCVU (ID_CV) ON DELETE CASCADE ON UPDATE CASCADE
 )
-
+-- Tạo bảng Hóa Đơn
 CREATE TABLE HOADON
 (
     [ID_HD] [int] IDENTITY(1,1) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE HOADON
 )
 ALTER TABLE HOADON
 ADD CONSTRAINT PK_HOADON PRIMARY KEY (ID_HD);
-
+-- Tạo bảng Chi tiết hóa đơn
 CREATE TABLE CHITIETHOADON
 (
     ID_HDCT int IDENTITY(1,1) PRIMARY KEY,
@@ -174,201 +174,184 @@ INSERT INTO CHITIETHOADON (MAHD, MASP, NGAYLAP, GIABAN, SOLUONG) VALUES
 (10, 10, '2024-07-03', 100000, 1);
 GO
 
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+-- TẠO SP
+-- SP LẤY DOANH THU NGÀY HÔM NAY
+CREATE OR ALTER PROCEDURE sp_DoanhThu_now
+AS
+BEGIN
+    SET NOCOUNT ON;
 
-----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
+    SELECT
+        SUM(ThanhTien) AS DoanhThu
+    FROM HoaDon
+    WHERE NGAYLAP = CAST(GETDATE() AS DATE);
+END
+GO
+EXEC sp_DoanhThu_now
+GO
 --Thống kê doanh thu theo ngày, tháng, năm
-CREATE PROC sp_ThongKeDoanhThu_DMY
-	(@Day INT,
-	@Month INT,
-	@Year INT)
+CREATE OR ALTER PROCEDURE sp_DoanhThu_date
+    @start DATE,
+    @end DATE
 AS
 BEGIN
-	SELECT
-		HD.NGAYLAP,
-		SUM(HD.THANHTIEN) TONGTIENHOMNAY
-	FROM HOADON HD
-	WHERE DAY(NGAYLAP) = @Day AND MONTH(NGAYLAP) = @Month AND YEAR(NGAYLAP) = @Year
-	GROUP BY HD.NGAYLAP
+    SET NOCOUNT ON; -- Nó sẽ không đếm số hàng thay đổi
+
+    SELECT
+        SUM(ThanhTien) AS DoanhThu
+    FROM HoaDon
+    WHERE NGAYLAP BETWEEN @start AND @end;
 END
 GO
-EXEC sp_ThongKeDoanhThu_DMY 7,7,2024
+EXEC sp_DoanhThu_date '2024-07-01', '2024-07-31'
 GO
---Thống kê doanh thu theo tháng, năm
-CREATE PROC sp_ThongKeDoanhThu_MY
-	(@Month INT,
-	@Year INT)
+-- SP LẤY DOANH THU THEO THÁNG HIỆN TẠI
+CREATE OR ALTER PROC get_doanhThu_thisMonth
 AS
 BEGIN
-	SELECT
-		MONTH(NGAYLAP) THANG,
-		SUM(HD.THANHTIEN) TONGTIEN
-	FROM HOADON HD
-	WHERE MONTH(NGAYLAP) = @Month AND YEAR(NGAYLAP) = @Year
-	GROUP BY MONTH(NGAYLAP)
+    SET NOCOUNT ON
+
+    SELECT
+        SUM(ThanhTien) AS DoanhThu
+    FROM HoaDon
+    WHERE MONTH(NGAYLAP) = MONTH(GETDATE())
+        AND YEAR(NGAYLAP) = YEAR(GETDATE())
 END
 GO
-EXEC sp_ThongKeDoanhThu_MY 7,2024
-GO
---Thống kê doanh thu theo năm
-CREATE PROC sp_ThongKeDoanhThu_Y
-	(@Year INT)
+-- SP LẤY DOANH THEO NĂM HIỆN TẠI
+CREATE OR ALTER PROC get_doanhThu_thisYear
 AS
 BEGIN
-	SELECT
-		YEAR(NGAYLAP) NAM,
-		SUM(HD.THANHTIEN) TONGTIEN
-	FROM HOADON HD
-	WHERE YEAR(NGAYLAP) = @Year
-	GROUP BY YEAR(NGAYLAP)
+    SET NOCOUNT ON
+
+    SELECT
+        SUM(ThanhTien) AS DoanhThu
+    FROM HoaDon
+    WHERE YEAR(NGAYLAP) = YEAR(GETDATE())
 END
 GO
-EXEC sp_ThongKeDoanhThu_Y 2024
-GO
---Thống kê sản phẩm bán chạy theo ngày, tháng, năm
-CREATE PROC sp_ThongKeSanPham_DMY
-	(@Day int,
-	@Month int,
-	@Year int)
+-- SP LẤY CHI TIẾT DOANH THU
+CREATE OR ALTER PROCEDURE get_doanhThu_detail
+    @year INT
 AS
 BEGIN
-	SELECT
-		SP.ID_SP,
-		SP.TENSP,
-		COUNT(HD.ID_HD) LUOTBAN
-	FROM HOADON HD
-		JOIN CHITIETHOADON CTHD ON HD.ID_HD = CTHD.MAHD
-		JOIN SANPHAM SP ON SP.ID_SP = CTHD.MASP
-	WHERE DAY(HD.NGAYLAP) = @Day AND MONTH(HD.NGAYLAP) = @Month AND YEAR(HD.NGAYLAP) = @Year
-	GROUP BY SP.ID_SP, SP.TENSP
-	ORDER BY LUOTBAN DESC
+    SET NOCOUNT ON;
+
+    SELECT
+        MONTH(hd.NGAYLAP) AS Thang,
+        SUM(hdct.SOLUONG) AS SoLuongBan,
+        SUM(hd.TONGTIEN *(1-(PHANTRAMGG/100))) AS DoanhThu
+    FROM HoaDon hd
+        JOIN CHITIETHOADON hdct ON hd.ID_HD = hdct.MaHD
+    WHERE YEAR(hd.NGAYLAP) = @year
+    GROUP BY MONTH(hd.NGAYLAP)
+    ORDER BY MONTH(hd.NGAYLAP);
 END
 GO
-EXEC sp_ThongKeSanPham_DMY 7,7,2024
-GO
---Thống kê sản phẩm bán chạy theo tháng, năm
-CREATE PROC sp_ThongKeSanPham_MY
-	(@Month int,
-	@Year int)
+EXEC get_doanhThu_detail 2024
+go
+
+-- SP ĐẾM HÓA ĐƠN NGÀY HÔM NAY
+CREATE OR ALTER PROCEDURE count_hoaDon_today
+    @status INT
 AS
 BEGIN
-	SELECT
-		SP.ID_SP,
-		SP.TENSP,
-		COUNT(HD.ID_HD) LUOTBAN
-	FROM HOADON HD
-		JOIN CHITIETHOADON CTHD ON HD.ID_HD = CTHD.MAHD
-		JOIN SANPHAM SP ON SP.ID_SP = CTHD.MASP
-	WHERE MONTH(HD.NGAYLAP) = @Month AND YEAR(HD.NGAYLAP) = @Year
-	GROUP BY SP.ID_SP, SP.TENSP
-	ORDER BY LUOTBAN DESC
+    SET NOCOUNT ON;
+
+    SELECT COUNT(*) AS SoHoaDon
+    FROM HoaDon
+    WHERE @status = 4 OR TrangThai = @status
+        AND NGAYLAP = CAST(GETDATE() AS DATE)
 END
 GO
-EXEC sp_ThongKeSanPham_MY 7,2024
-GO
---Thống kê sản phẩm bán chạy theo năm
-CREATE PROC sp_ThongKeSanPham_Y
-	(
-	@Year int)
+-- SP ĐẾM HÓA ĐƠN THEO NGÀY
+CREATE OR ALTER PROCEDURE count_hoaDon_byDate
+    @status INT,
+    @start DATE,
+    @end DATE
 AS
 BEGIN
-	SELECT
-		SP.ID_SP,
-		SP.TENSP,
-		COUNT(HD.ID_HD) LUOTBAN
-	FROM HOADON HD
-		JOIN CHITIETHOADON CTHD ON HD.ID_HD = CTHD.MAHD
-		JOIN SANPHAM SP ON SP.ID_SP = CTHD.MASP
-	WHERE YEAR(HD.NGAYLAP) = @Year
-	GROUP BY SP.ID_SP, SP.TENSP
-	ORDER BY LUOTBAN DESC
+    SET NOCOUNT ON;
+
+    SELECT COUNT(*) AS SoHoaDon
+    FROM HoaDon
+    WHERE @status = 4 OR TrangThai = @status
+        AND NGAYLAP BETWEEN @start AND @end;
 END
-GO
-EXEC sp_ThongKeSanPham_Y 2024
 GO
 
---Thống kê sản phẩm theo loại
-CREATE PROC sp_ThongKeSanPham_LOAIPK_Y
-	(@Year int)
+-- SP ĐẾM HÓA ĐƠN THEO THÁNG HIỆN TẠI
+CREATE OR ALTER PROCEDURE count_hoaDon_thisMonth
+    @status INT
 AS
 BEGIN
-	SELECT
-		LH.TENLPK,
-		COUNT(HD.ID_HD) LUOTBAN
-	FROM HOADON HD
-		JOIN CHITIETHOADON CTHD ON HD.ID_HD = CTHD.MAHD
-		JOIN SANPHAM SP ON SP.ID_SP = CTHD.MASP
-		JOIN LOAIPK LH ON LH.ID_LPK = SP.MALOAIPK
-	WHERE YEAR(HD.NGAYLAP) = @Year
-	GROUP BY LH.TENLPK
-	ORDER BY LUOTBAN DESC
+    SET NOCOUNT ON;
+
+    SELECT COUNT(*) AS SoHoaDon
+    FROM HoaDon
+    WHERE @status = 4 OR TrangThai = @status
+        AND MONTH(NGAYLAP) = MONTH(GETDATE())
+        AND YEAR(NGAYLAP) = YEAR(GETDATE())
 END
-GO
-EXEC sp_ThongKeSanPham_LOAIPK_Y 2024
-Go
--------------------------------------
---Thống kê sản phẩm bán chạy theo ngày, tháng, năm TĂNG DẦN
-CREATE PROC sp_ThongKeSanPham_DMY_ASC
-	(@Day int,
-	@Month int,
-	@Year int)
-AS
-BEGIN
-	SELECT
-		SP.ID_SP,
-		SP.TENSP,
-		COUNT(HD.ID_HD) LUOTBAN
-	FROM HOADON HD
-		JOIN CHITIETHOADON CTHD ON HD.ID_HD = CTHD.MAHD
-		JOIN SANPHAM SP ON SP.ID_SP = CTHD.MASP
-	WHERE DAY(HD.NGAYLAP) = @Day AND MONTH(HD.NGAYLAP) = @Month AND YEAR(HD.NGAYLAP) = @Year
-	GROUP BY SP.ID_SP, SP.TENSP
-	ORDER BY LUOTBAN ASC
-END
-GO
-EXEC sp_ThongKeSanPham_DMY_ASC 7,7,2024
-GO
---Thống kê sản phẩm bán chạy theo tháng, năm TĂNG DẦN
-CREATE PROC sp_ThongKeSanPham_MY_ASC
-	(@Month int,
-	@Year int)
-AS
-BEGIN
-	SELECT
-		SP.ID_SP,
-		SP.TENSP,
-		COUNT(HD.ID_HD) LUOTBAN
-	FROM HOADON HD
-		JOIN CHITIETHOADON CTHD ON HD.ID_HD = CTHD.MAHD
-		JOIN SANPHAM SP ON SP.ID_SP = CTHD.MASP
-	WHERE MONTH(HD.NGAYLAP) = @Month AND YEAR(HD.NGAYLAP) = @Year
-	GROUP BY SP.ID_SP, SP.TENSP
-	ORDER BY LUOTBAN ASC
-END
-GO
-EXEC sp_ThongKeSanPham_MY_ASC 7,2024
-GO
---Thống kê sản phẩm bán chạy theo năm TĂNG DẦN
-CREATE PROC sp_ThongKeSanPham_Y_ASC
-	(
-	@Year int)
-AS
-BEGIN
-	SELECT
-		SP.ID_SP,
-		SP.TENSP,
-		COUNT(HD.ID_HD) LUOTBAN
-	FROM HOADON HD
-		JOIN CHITIETHOADON CTHD ON HD.ID_HD = CTHD.MAHD
-		JOIN SANPHAM SP ON SP.ID_SP = CTHD.MASP
-	WHERE YEAR(HD.NGAYLAP) = @Year
-	GROUP BY SP.ID_SP, SP.TENSP
-	ORDER BY LUOTBAN ASC
-END
-GO
-EXEC sp_ThongKeSanPham_Y_ASC 2024
 GO
 
+-- SP ĐỀM HÓA ĐƠN THEO NĂM HIỆN TẠI
+CREATE OR ALTER PROCEDURE count_hoaDon_thisYear
+    @status INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT COUNT(*) AS SoHoaDon
+    FROM HoaDon
+    WHERE @status = 4 OR TrangThai = @status
+        AND YEAR(NGAYLAP) = YEAR(GETDATE())
+END
+GO
+-- SP LẤY TOP 10 SẢN PHẨM BÁN CHẠY TRONG THÁNG
+CREATE OR ALTER PROCEDURE get_top10_sanPham
+    @Thang INT,
+    @Nam INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT TOP 10
+        'SP' + FORMAT(sp.ID_SP, '0000') AS MaSP,
+        sp.TenSP AS TenSP,
+        hsx.TENHANGSX AS TENHANGSX,
+        SUM(hdct.SoLuong) AS SoLuongBan
+    FROM HANGSX hsx
+        JOIN SanPham sp ON hsx.ID_HANGSX = sp.MAHANGSX
+        JOIN CHITIETHOADON hdct ON sp.ID_SP = hdct.MaSP
+        JOIN HoaDon hd ON hdct.MaHD = hd.ID_HD
+    WHERE MONTH(hd.NGAYLAP) = @Thang
+        AND YEAR(hd.NGAYLAP) = @Nam
+    GROUP BY sp.ID_SP, sp.TenSP, hsx.TENHANGSX
+    ORDER BY SoLuongBan DESC;
+END
+GO
+-- TRIGGER THANH TOÁN HÓA ĐƠN
+CREATE OR ALTER TRIGGER cancel_HoaDon ON HoaDon
+AFTER UPDATE
+AS
+BEGIN
+    IF EXISTS (SELECT *
+    FROM inserted
+    WHERE TrangThai = 1)
+    BEGIN
+        UPDATE SanPham
+            SET SoLuong = sp.SoLuong - hdct.SoLuong
+        FROM SanPham sp
+            JOIN CHITIETHOADON hdct ON sp.ID_SP = hdct.MaSP
+            JOIN inserted i ON hdct.MaHD = i.ID_HD
+        WHERE i.TrangThai = 1
+    END
+END
+GO
+--SP lấy top 3 nhân viên xuất sắc
 CREATE or alter PROCEDURE sp_LayNVXS
 AS
 BEGIN   
