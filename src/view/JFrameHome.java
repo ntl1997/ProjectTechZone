@@ -49,20 +49,20 @@ public class JFrameHome extends javax.swing.JFrame {
             }
             
         }).start();
-        this.openWelcome(new Frame());
-        this.openLogin(new Frame());
+        this.openWelcome();
+        JDialogDangNhap login = new JDialogDangNhap(this, true);
+        login.setVisible(true);
+        if (!login.isSucceeded()) {
+            System.exit(0);
+        }
     }
     
-    void openWelcome(Frame parentFrame) {
-        new JDialogChao(parentFrame, true).setVisible(true);
-    }
-    
-    void openLogin(Frame parentFrame) {
-        new JDialogDangNhap(parentFrame, true).setVisible(true);
+    void openWelcome() {
+        new JDialogChao(this, true).setVisible(true);
     }
 
-    ////////////////////////
     void dangXuat() {
+        Auth.clear();
         new JDialogDangNhap(this, true).setVisible(true);
     }
     
