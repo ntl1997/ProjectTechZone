@@ -15,6 +15,7 @@ import Utils.MsgBox;
  */
 public class JDialogDangNhap extends javax.swing.JDialog {
 
+    private boolean succeeded;
     TaiKhoanDao tkd = new TaiKhoanDao();
 
     /**
@@ -26,6 +27,11 @@ public class JDialogDangNhap extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         setTitle("TechZone Đăng Nhập");
     }
+
+    public boolean isSucceeded() {
+        return succeeded;
+    }
+
     void dangNhap() {
         String tendn = txtTaiKhoan.getText();
         String mk = new String(txtMkhau.getPassword());
@@ -43,6 +49,8 @@ public class JDialogDangNhap extends javax.swing.JDialog {
             MsgBox.alert(this, "Sai mật khẩu");
         } else {
             Auth.user = taikhoan;
+            succeeded = true;
+
 //            System.out.println("Mã tài khoản: " + Auth.user.getID_TK());
             this.dispose();
         }
@@ -53,6 +61,7 @@ public class JDialogDangNhap extends javax.swing.JDialog {
             System.exit(0);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
