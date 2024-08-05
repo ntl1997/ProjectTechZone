@@ -19,7 +19,7 @@ public class Auth {
         return Auth.user != null;
     }
     public static boolean isVaiTro(){
-        return user.getMACV() == 1;
+        return user.getMACV() == 2;
     }
     public static boolean isManager(){
         return Auth.isLogin() && isVaiTro();
