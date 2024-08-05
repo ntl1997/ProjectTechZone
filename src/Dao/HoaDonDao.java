@@ -21,6 +21,8 @@ public class HoaDonDao extends TechZoneDao<HOADON, Integer>{
     final String Select_all_SQL="select * from HOADON";
     final String Select_ID_SQL="select * from HOADON where ID_HD=?";
     private final String SELECT_BY_STATUS = "SELECT * FROM HoaDon WHERE TrangThai = ?";
+    private final String SELECT_YEAR = "SELECT DISTINCT YEAR(NGAYLAP) AS Nam FROM HoaDon";
+
 //    private int ID_HD; 
 //    private int MATAIKHOAN;
 //    private Date NGAYLAP; 
@@ -121,6 +123,17 @@ public class HoaDonDao extends TechZoneDao<HOADON, Integer>{
     public List<HOADON> selectByStatus(int status) {
         return selectBySql(SELECT_BY_STATUS, status);
     }
-
+        // Select cac nam co doanh thu
+    public List<Integer> selectYear() {
+        List<Integer> list = new ArrayList<>();
+        try (ResultSet rs = XJdbc.query(SELECT_YEAR)) {
+            while (rs.next()) {                
+                list.add(rs.getInt("Nam"));
+            }
+            return list;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
