@@ -328,6 +328,8 @@ public class JDialogSanPham extends javax.swing.JDialog {
             System.out.println("LỖI KHI CẬP NHẬP: "+ e);
         }
     }
+    }
+    
     }    
     public void HSXdelete(){
         HANGSX hsx = this.getHSXForm();
@@ -468,6 +470,7 @@ public class JDialogSanPham extends javax.swing.JDialog {
             System.out.println("LỖI KHI CẬP NHẬP: "+ e);
         }
     }
+    }   
     }   
     public void LPKdelete(){
         LOAIPK lpk = this.getLPKForm();

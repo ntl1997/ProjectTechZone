@@ -228,6 +228,8 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
             System.out.println("Sua that bai" + e);
         }
     }
+    }
+    
     }    
     public void delete(){
         if(MsgBox.confirm(this, "Bạn muốn xóa nhân viên này?")){
