@@ -191,6 +191,10 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
     }
     
     public void insert(){
+        if(txtTenNV.getText().isBlank() || txtTenDNNV.getText().isBlank() || txtEmailNV.getText().isBlank() || 
+                txtMatKhau.getText().isBlank() || txtNgaySinhNV.getText().isBlank() || txtDiaChiNV.getText().isBlank() || txtSDTNV.getText().isBlank()){
+            MsgBox.alert(this, "BẠN CHƯA ĐIỀN ĐỦ THÔNG TIN");
+        }else{
         TAIKHOAN tk = getForm();
         try {
             tkd.insert(tk);
@@ -202,8 +206,12 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
             System.out.println("Them that bai" + e);
         }
     }
-    
+    }   
     public void update(){
+        if(txtTenNV.getText().isBlank() || txtTenDNNV.getText().isBlank() || txtEmailNV.getText().isBlank() || 
+                txtMatKhau.getText().isBlank() || txtNgaySinhNV.getText().isBlank() || txtDiaChiNV.getText().isBlank() || txtSDTNV.getText().isBlank()){
+            MsgBox.alert(this, "BẠN CHƯA ĐIỀN ĐỦ THÔNG TIN");
+        }else{
         TAIKHOAN tk = this.getForm();
         try {
             int vitri = tblNV.getSelectedRow();
@@ -218,6 +226,7 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
             MsgBox.alert(this, "Sua that bai");
             System.out.println("Sua that bai" + e);
         }
+    }
     }
     
     public void delete(){
@@ -289,24 +298,54 @@ public class JDialogTaiKhoan extends javax.swing.JDialog {
     }
     
     public void insertCV(){
+        if(txtTenCV.getText().isBlank() || traMoTaCV.getText().isBlank()){
+            MsgBox.alert(this, "BẠN CHƯA ĐIỀN ĐỦ THÔNG TIN");
+        }else{
         CHUCVU cv = this.getCVForm();
         try {
             cvd.insert(cv);
             this.filltblCV();
-            this.clear();
+            this.clearCV();
             MsgBox.alert(this, "THEM CHUC VU THANH CONG");
         } catch (Exception e) {
             System.out.println("THEM CHUC VU THAT BAI" + e);
             MsgBox.alert(this, "THEM CHUC VU THAT BAI");
         }
     }
-    
+    }    
     public void updateCV(){
-        
+        if(txtTenCV.getText().isBlank() || traMoTaCV.getText().isBlank()){
+            MsgBox.alert(this, "BẠN CHƯA ĐIỀN ĐỦ THÔNG TIN");
+        }else{
+        CHUCVU cv = this.getCVForm();
+        try {
+            int vitri = tblCV.getSelectedRow();
+            String mcv2 = String.valueOf(tblCV.getValueAt(vitri, 0));
+            int mcv = Integer.parseInt(mcv2);
+            cv.setID_CV(mcv);            
+            cvd.update(cv);
+            this.filltblCV();
+            this.clearCV();
+            MsgBox.alert(this, "SUA CHUC VU THANH CONG");
+        } catch (Exception e) {
+            System.out.println("SUA CHUC VU THAT BAI" + e);
+            MsgBox.alert(this, "SUA CHUC VU THAT BAI");
+        }
     }
-    
+}    
     public void deleteCV(){
-        
+        if(MsgBox.confirm(this, "Bạn muốn xóa chức vụ này?")){
+            try {
+                     String macv = String.valueOf(tblCV.getValueAt(this.row, 0));
+                     cvd.delete(macv);
+                     this.filltblCV();
+                     this.clearCV();
+                     MsgBox.alert(this, "Xoa thanh cong");
+                 } catch (Exception e) {
+                     MsgBox.alert(this, "Xoa that bai");
+                     System.out.println("Xóa thất bại" + e);
+                 }
+        }
     }
     // CHUC VU END
     
