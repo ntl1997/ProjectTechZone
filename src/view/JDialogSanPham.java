@@ -330,6 +330,7 @@ public class JDialogSanPham extends javax.swing.JDialog {
     }
     }
     
+    }    
     public void HSXdelete(){
         HANGSX hsx = this.getHSXForm();
         if(MsgBox.confirm(this, "BẠN MUỐN XÓA HÃNG SẢN XUẤT NÀY KHÔNG?")){
@@ -469,8 +470,8 @@ public class JDialogSanPham extends javax.swing.JDialog {
             System.out.println("LỖI KHI CẬP NHẬP: "+ e);
         }
     }
-    }
-    
+    }   
+    }   
     public void LPKdelete(){
         LOAIPK lpk = this.getLPKForm();
         if(MsgBox.confirm(this, "BẠN MUỐN XÓA LOẠI PHỤ KIỆN NÀY KHÔNG?")){

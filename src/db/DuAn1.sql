@@ -173,6 +173,8 @@ INSERT INTO CHITIETHOADON (MAHD, MASP, NGAYLAP, GIABAN, SOLUONG) VALUES
 (9, 9, '2024-07-04', 150000, 1),
 (10, 10, '2024-07-03', 100000, 1);
 GO
+
+
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 -- TẠO SP
@@ -351,6 +353,9 @@ BEGIN
 END
 GO
 --SP lấy top 3 nhân viên xuất sắc
+EXEC sp_ThongKeSanPham_Y_ASC 2024
+GO
+
 CREATE or alter PROCEDURE sp_LayNVXS
 AS
 BEGIN   
